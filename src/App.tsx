@@ -1,7 +1,7 @@
-import { Text } from "@chakra-ui/react";
+import ExpenseTable from "./components/ExpenseTable";
 
 const App = () => {
-  return <Text>Fuel Economy Tracker</Text>;
+  return <ExpenseTable />;
 };
 
 export default App;
