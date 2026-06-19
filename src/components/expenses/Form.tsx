@@ -10,15 +10,23 @@ import {
 import { LuCalendar } from "react-icons/lu";
 import { TbCurrencyPeso } from "react-icons/tb";
 import { FaCarAlt, FaGasPump } from "react-icons/fa";
+import { useForm, type FieldValues } from "react-hook-form";
 
-const ExpenseForm = () => {
+interface Props {
+  kmStart?: number;
+  onSubmitExpense: (data: FieldValues) => void;
+}
+
+const ExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
+  const { register, handleSubmit, reset } = useForm();
+
+  const onSubmit = (data: FieldValues) => {
+    onSubmitExpense(data);
+    reset();
+  };
+
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        // if (ref.current) onSearch(ref.current.value);
-      }}
-    >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} gap={4}>
         <InputGroup>
           <DatePicker.Root variant="subtle" placeholder="Date (mm/dd/yyyy)">
@@ -51,37 +59,42 @@ const ExpenseForm = () => {
             </Portal>
           </DatePicker.Root>
         </InputGroup>
+
         <InputGroup startElement={<FaCarAlt />}>
           <Input
-            // ref={ref}
+            {...register("kmEnd")}
             placeholder="Kilometers (End)"
             variant="subtle"
           />
         </InputGroup>
+
         <InputGroup startElement={<FaCarAlt />}>
           <Input
-            // ref={ref}
+            {...register("kmStart")}
             placeholder="Kilometers (Start)"
             variant="subtle"
+            value={kmStart > 0 ? kmStart : undefined}
           />
         </InputGroup>
+
         <InputGroup startElement={<FaGasPump />}>
           <Input
-            // ref={ref}
+            {...register("liters")}
             placeholder="Liters Consumed"
             variant="subtle"
           />
         </InputGroup>
+
         <Group attached w="full" maxW="sm">
           <InputGroup startElement={<TbCurrencyPeso />}>
             <Input
-              // ref={ref}
+              {...register("price")}
               flex="1"
               placeholder="Gas Price/Liter"
               variant="subtle"
             />
           </InputGroup>
-          <Button bg="bg.subtle" variant="subtle">
+          <Button type="submit" bg="bg.subtle" variant="subtle">
             Submit
           </Button>
         </Group>

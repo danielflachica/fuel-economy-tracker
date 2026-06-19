@@ -8,7 +8,8 @@ interface Props {
 }
 
 const ExpenseTable = ({ columns, items }: Props) => {
-  if (!items || items.length === 0) return <Text>No records found.</Text>;
+  if (!items || items.length === 0)
+    return <Text color="fg.muted">No records found.</Text>;
 
   return (
     <Table.Root size="sm" variant="outline">

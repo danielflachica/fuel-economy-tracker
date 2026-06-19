@@ -5,20 +5,25 @@ import ExpenseForm from "./components/expenses/Form";
 import ExpenseTable from "./components/expenses/Table";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { useState } from "react";
+import type { FieldValues } from "react-hook-form";
 
 const App = () => {
-  const expenses: Expense[] = [
-    {
-      id: 1,
-      date: new Date(),
-      kilometers: {
-        start: 0,
-        end: 1000,
-      },
-      liters: 27,
-      gasPrice: 2300,
-    },
-  ];
+  const [kmStart, setKmStart] = useState(0);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+
+  // const expenses: Expense[] = [
+  //   {
+  //     id: 1,
+  //     date: new Date(),
+  //     kilometers: {
+  //       start: 0,
+  //       end: 1000,
+  //     },
+  //     liters: 27,
+  //     gasPrice: 2300,
+  //   },
+  // ];
   const columns: Column[] = [
     { label: "Date", align: "start" },
     { label: "Km End", align: "start" },
@@ -29,6 +34,27 @@ const App = () => {
     { label: "Gas Price/L", align: "end" },
     { label: "Total Fuel Cost", align: "end" },
   ];
+
+  const addExpense = (data: FieldValues) => {
+    // Convert all string values to float
+    const expense = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [key, parseFloat(value)])
+    );
+
+    const newExpense: Expense = {
+      id: expense.kmStart,
+      date: new Date(),
+      kilometers: {
+        start: expense.kmStart,
+        end: expense.kmEnd,
+      },
+      liters: expense.liters,
+      gasPrice: expense.price,
+    };
+
+    setExpenses([...expenses, newExpense]);
+    setKmStart(expense.kmEnd);
+  };
 
   return (
     <>
@@ -49,7 +75,7 @@ const App = () => {
               py={5}
               gap={8}
             >
-              <ExpenseForm />
+              <ExpenseForm kmStart={kmStart} onSubmitExpense={addExpense} />
               <ExpenseTable columns={columns} items={expenses} />
             </Flex>
           </Container>
