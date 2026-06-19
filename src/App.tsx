@@ -1,7 +1,8 @@
-import type { Expense } from "@/types/Expense";
-import ExpenseTable from "./components/ExpenseTable";
-import type { Column } from "./types/Column";
 import { Container, Flex } from "@chakra-ui/react";
+import type { Column } from "@/types/Column";
+import type { Expense } from "@/types/Expense";
+import ExpenseForm from "./components/expenses/Form";
+import ExpenseTable from "./components/expenses/Table";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -41,7 +42,14 @@ const App = () => {
           justifyContent="space-between"
         >
           <Container maxW="container.xl">
-            <Flex direction="column" align="center" textAlign="center" py={5}>
+            <Flex
+              direction="column"
+              align="center"
+              textAlign="center"
+              py={5}
+              gap={8}
+            >
+              <ExpenseForm />
               <ExpenseTable columns={columns} items={expenses} />
             </Flex>
           </Container>
