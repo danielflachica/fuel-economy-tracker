@@ -1,29 +1,46 @@
-import { Table } from "@chakra-ui/react";
+import type { Column } from "@/types/Column";
+import type { Expense } from "@/types/Expense";
+import { Table, Text } from "@chakra-ui/react";
 
-const ExpenseTable = () => {
-  const items = [
-    { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
-    { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
-    { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
-    { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
-    { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
-  ];
+interface Props {
+  columns: Column[];
+  items?: Expense[];
+}
+
+const ExpenseTable = ({ columns, items }: Props) => {
+  if (!items || items.length === 0) return <Text>No records found.</Text>;
 
   return (
     <Table.Root size="sm" variant="outline">
       <Table.Header>
         <Table.Row>
-          <Table.ColumnHeader>Product</Table.ColumnHeader>
-          <Table.ColumnHeader>Category</Table.ColumnHeader>
-          <Table.ColumnHeader textAlign="end">Price</Table.ColumnHeader>
+          {columns.map((col) => (
+            <Table.ColumnHeader key={col.label} textAlign={col.align}>
+              {col.label}
+            </Table.ColumnHeader>
+          ))}
         </Table.Row>
       </Table.Header>
       <Table.Body>
         {items.map((item) => (
           <Table.Row key={item.id}>
-            <Table.Cell>{item.name}</Table.Cell>
-            <Table.Cell>{item.category}</Table.Cell>
-            <Table.Cell textAlign="end">{item.price}</Table.Cell>
+            <Table.Cell>{item.date.toDateString()}</Table.Cell>
+            <Table.Cell>{item.kilometers.end}</Table.Cell>
+            <Table.Cell>{item.kilometers.start}</Table.Cell>
+            <Table.Cell>
+              {item.kilometers.end - item.kilometers.start}
+            </Table.Cell>
+            <Table.Cell>{item.liters}</Table.Cell>
+            <Table.Cell>
+              {(
+                (item.kilometers.end - item.kilometers.start) /
+                item.liters
+              ).toFixed(2)}
+            </Table.Cell>
+            <Table.Cell textAlign="end">{item.gasPrice.toFixed(2)}</Table.Cell>
+            <Table.Cell textAlign="end">
+              {(item.gasPrice * item.liters).toFixed(2)}
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
