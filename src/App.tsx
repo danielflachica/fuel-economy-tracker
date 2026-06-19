@@ -1,6 +1,9 @@
 import type { Expense } from "@/types/Expense";
 import ExpenseTable from "./components/ExpenseTable";
 import type { Column } from "./types/Column";
+import { Container, Flex } from "@chakra-ui/react";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 const App = () => {
   const expenses: Expense[] = [
@@ -26,7 +29,28 @@ const App = () => {
     { label: "Total Fuel Cost", align: "end" },
   ];
 
-  return <ExpenseTable columns={columns} items={expenses} />;
+  return (
+    <>
+      <Flex direction="column" minH="100dvh">
+        <Navbar />
+
+        <Flex
+          as="main"
+          direction="column"
+          flex="1"
+          justifyContent="space-between"
+        >
+          <Container maxW="container.xl">
+            <Flex direction="column" align="center" textAlign="center" py={5}>
+              <ExpenseTable columns={columns} items={expenses} />
+            </Flex>
+          </Container>
+        </Flex>
+
+        <Footer />
+      </Flex>
+    </>
+  );
 };
 
 export default App;
