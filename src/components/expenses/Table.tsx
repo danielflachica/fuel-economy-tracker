@@ -11,7 +11,11 @@ interface Props {
 
 const ExpenseTable = ({ columns, items, onEdit, onDelete }: Props) => {
   if (!items || items.length === 0)
-    return <Text color="fg.muted">No records found.</Text>;
+    return (
+      <Text color="fg.muted" fontSize="sm">
+        No records found.
+      </Text>
+    );
 
   return (
     <Table.Root size="sm" variant="outline">
