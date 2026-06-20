@@ -12,18 +12,6 @@ const App = () => {
   const [kmStart, setKmStart] = useState(0);
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
-  // const expenses: Expense[] = [
-  //   {
-  //     id: 1,
-  //     date: new Date(),
-  //     kilometers: {
-  //       start: 0,
-  //       end: 1000,
-  //     },
-  //     liters: 27,
-  //     gasPrice: 2300,
-  //   },
-  // ];
   const columns: Column[] = [
     { label: "Date", align: "start" },
     { label: "Km End", align: "start" },
@@ -36,24 +24,39 @@ const App = () => {
   ];
 
   const addExpense = (data: FieldValues) => {
-    // Convert all string values to float
-    const expense = Object.fromEntries(
-      Object.entries(data).map(([key, value]) => [key, parseFloat(value)])
+    // Convert all string values to float or Date
+    const { date, kmStart, kmEnd, liters, gasPrice } = Object.fromEntries(
+      Object.entries(data).map(([key, value]) =>
+        key === "date" ? [key, new Date(value)] : [key, parseFloat(value)]
+      )
     );
+    // TO-DO: Get ID from databse
+    const id = Math.floor(Math.random() * 1000) + 1;
 
     const newExpense: Expense = {
-      id: expense.kmStart,
-      date: new Date(),
-      kilometers: {
-        start: expense.kmStart,
-        end: expense.kmEnd,
-      },
-      liters: expense.liters,
-      gasPrice: expense.price,
+      id,
+      date,
+      kmStart,
+      kmEnd,
+      liters,
+      gasPrice,
     };
 
     setExpenses([...expenses, newExpense]);
-    setKmStart(expense.kmEnd);
+    setKmStart(kmEnd);
+    console.log(expenses);
+  };
+
+  const editExpense = (expense: Expense) => {
+    console.log(expense);
+  };
+
+  const deleteExpense = (expense: Expense) => {
+    setExpenses([...expenses].filter((e) => e.id !== expense.id));
+    // setKmStart(
+    //   expenses.findLast((e) => typeof e.kilometers.end === "number").kilometers
+    //     .end
+    // );
   };
 
   return (
@@ -75,8 +78,13 @@ const App = () => {
               py={5}
               gap={8}
             >
-              <ExpenseForm kmStart={kmStart} onSubmitExpense={addExpense} />
-              <ExpenseTable columns={columns} items={expenses} />
+              <ExpenseForm onSubmitExpense={addExpense} />
+              <ExpenseTable
+                columns={columns}
+                items={expenses}
+                onEdit={editExpense}
+                onDelete={deleteExpense}
+              />
             </Flex>
           </Container>
         </Flex>

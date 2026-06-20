@@ -6,6 +6,7 @@ import {
   DatePicker,
   Portal,
   Group,
+  parseDate,
 } from "@chakra-ui/react";
 import { LuCalendar } from "react-icons/lu";
 import { TbCurrencyPeso } from "react-icons/tb";
@@ -13,12 +14,12 @@ import { FaCarAlt, FaGasPump } from "react-icons/fa";
 import { useForm, type FieldValues } from "react-hook-form";
 
 interface Props {
-  kmStart?: number;
   onSubmitExpense: (data: FieldValues) => void;
 }
 
-const ExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
+const ExpenseForm = ({ onSubmitExpense }: Props) => {
   const { register, handleSubmit, reset } = useForm();
+  const todayISO = new Date().toISOString().split("T")[0];
 
   const onSubmit = (data: FieldValues) => {
     onSubmitExpense(data);
@@ -29,10 +30,14 @@ const ExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} gap={4}>
         <InputGroup>
-          <DatePicker.Root variant="subtle" placeholder="Date (mm/dd/yyyy)">
+          <DatePicker.Root
+            defaultValue={[parseDate(todayISO)]}
+            placeholder="Date (mm/dd/yyyy)"
+            variant="subtle"
+          >
             <DatePicker.Label />
             <DatePicker.Control>
-              <DatePicker.Input />
+              <DatePicker.Input {...register("date")} />
               <DatePicker.IndicatorGroup>
                 <DatePicker.Trigger>
                   <LuCalendar />
@@ -73,7 +78,6 @@ const ExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
             {...register("kmStart")}
             placeholder="Kilometers (Start)"
             variant="subtle"
-            value={kmStart > 0 ? kmStart : undefined}
           />
         </InputGroup>
 
@@ -88,7 +92,7 @@ const ExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
         <Group attached w="full" maxW="sm">
           <InputGroup startElement={<TbCurrencyPeso />}>
             <Input
-              {...register("price")}
+              {...register("gasPrice")}
               flex="1"
               placeholder="Gas Price/Liter"
               variant="subtle"

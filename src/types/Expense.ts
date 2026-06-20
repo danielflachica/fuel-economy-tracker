@@ -1,12 +1,8 @@
-interface Kilometer {
-  start: number;
-  end: number;
-}
-
 export interface Expense {
   id: number;
   date: Date;
-  kilometers: Kilometer;
+  kmStart: number;
+  kmEnd: number;
   liters: number;
   gasPrice: number;
 }
