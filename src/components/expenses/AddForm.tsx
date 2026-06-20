@@ -17,7 +17,7 @@ interface Props {
   onSubmitExpense: (data: FieldValues) => void;
 }
 
-const ExpenseForm = ({ onSubmitExpense }: Props) => {
+const AddExpenseForm = ({ onSubmitExpense }: Props) => {
   const { register, handleSubmit, reset } = useForm();
   const todayISO = new Date().toISOString().split("T")[0];
 
@@ -107,4 +107,4 @@ const ExpenseForm = ({ onSubmitExpense }: Props) => {
   );
 };
 
-export default ExpenseForm;
+export default AddExpenseForm;
