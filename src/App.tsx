@@ -44,7 +44,6 @@ const App = () => {
 
     setExpenses([...expenses, newExpense]);
     setKmStart(kmEnd);
-    console.log(expenses);
   };
 
   const editExpense = (expense: Expense) => {

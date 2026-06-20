@@ -37,7 +37,7 @@ const ExpenseForm = ({ onSubmitExpense }: Props) => {
           >
             <DatePicker.Label />
             <DatePicker.Control>
-              <DatePicker.Input {...register("date")} />
+              <DatePicker.Input {...register("date", { required: true })} />
               <DatePicker.IndicatorGroup>
                 <DatePicker.Trigger>
                   <LuCalendar />
@@ -67,7 +67,7 @@ const ExpenseForm = ({ onSubmitExpense }: Props) => {
 
         <InputGroup startElement={<FaCarAlt />}>
           <Input
-            {...register("kmEnd")}
+            {...register("kmEnd", { required: true })}
             placeholder="Kilometers (End)"
             variant="subtle"
           />
@@ -75,7 +75,7 @@ const ExpenseForm = ({ onSubmitExpense }: Props) => {
 
         <InputGroup startElement={<FaCarAlt />}>
           <Input
-            {...register("kmStart")}
+            {...register("kmStart", { required: true })}
             placeholder="Kilometers (Start)"
             variant="subtle"
           />
@@ -83,7 +83,7 @@ const ExpenseForm = ({ onSubmitExpense }: Props) => {
 
         <InputGroup startElement={<FaGasPump />}>
           <Input
-            {...register("liters")}
+            {...register("liters", { required: true })}
             placeholder="Liters Consumed"
             variant="subtle"
           />
@@ -92,7 +92,7 @@ const ExpenseForm = ({ onSubmitExpense }: Props) => {
         <Group attached w="full" maxW="sm">
           <InputGroup startElement={<TbCurrencyPeso />}>
             <Input
-              {...register("gasPrice")}
+              {...register("gasPrice", { required: true })}
               flex="1"
               placeholder="Gas Price/Liter"
               variant="subtle"
