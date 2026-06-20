@@ -11,17 +11,18 @@ import {
 import { LuCalendar } from "react-icons/lu";
 import { TbCurrencyPeso } from "react-icons/tb";
 import { FaCarAlt, FaGasPump } from "react-icons/fa";
-import { useForm, type FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { Expense } from "@/types/Expense";
 
 interface Props {
-  onSubmitExpense: (data: FieldValues) => void;
+  onSubmitExpense: (data: Expense) => void;
 }
 
 const AddExpenseForm = ({ onSubmitExpense }: Props) => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm<Expense>();
   const todayISO = new Date().toISOString().split("T")[0];
 
-  const onSubmit = (data: FieldValues) => {
+  const onSubmit = (data: Expense) => {
     onSubmitExpense(data);
     reset();
   };
@@ -37,7 +38,9 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
           >
             <DatePicker.Label />
             <DatePicker.Control>
-              <DatePicker.Input {...register("date", { required: true })} />
+              <DatePicker.Input
+                {...register("date", { required: true, valueAsDate: true })}
+              />
               <DatePicker.IndicatorGroup>
                 <DatePicker.Trigger>
                   <LuCalendar />
@@ -67,7 +70,7 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
 
         <InputGroup startElement={<FaCarAlt />}>
           <Input
-            {...register("kmEnd", { required: true })}
+            {...register("kmEnd", { required: true, valueAsNumber: true })}
             placeholder="Kilometers (End)"
             variant="subtle"
           />
@@ -75,7 +78,7 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
 
         <InputGroup startElement={<FaCarAlt />}>
           <Input
-            {...register("kmStart", { required: true })}
+            {...register("kmStart", { required: true, valueAsNumber: true })}
             placeholder="Kilometers (Start)"
             variant="subtle"
           />
@@ -83,7 +86,7 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
 
         <InputGroup startElement={<FaGasPump />}>
           <Input
-            {...register("liters", { required: true })}
+            {...register("liters", { required: true, valueAsNumber: true })}
             placeholder="Liters Consumed"
             variant="subtle"
           />
@@ -92,7 +95,7 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
         <Group attached w="full" maxW="sm">
           <InputGroup startElement={<TbCurrencyPeso />}>
             <Input
-              {...register("gasPrice", { required: true })}
+              {...register("gasPrice", { required: true, valueAsNumber: true })}
               flex="1"
               placeholder="Gas Price/Liter"
               variant="subtle"

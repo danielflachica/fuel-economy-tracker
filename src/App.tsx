@@ -31,27 +31,11 @@ const App = () => {
     { label: "Total Fuel Cost", align: "end" },
   ];
 
-  const addExpense = (data: FieldValues) => {
-    // Convert all string values to float or Date
-    const { date, kmStart, kmEnd, liters, gasPrice } = Object.fromEntries(
-      Object.entries(data).map(([key, value]) =>
-        key === "date" ? [key, new Date(value)] : [key, parseFloat(value)]
-      )
-    );
+  const addExpense = (data: Expense) => {
     // TO-DO: Get ID from databse
     const id = Math.floor(Math.random() * 1000) + 1;
-
-    const newExpense: Expense = {
-      id,
-      date,
-      kmStart,
-      kmEnd,
-      liters,
-      gasPrice,
-    };
-
-    setExpenses([...expenses, newExpense]);
-    setKmStart(kmEnd);
+    setExpenses([...expenses, { ...data, id }]);
+    // setKmStart(data.kmEnd);
   };
 
   const editExpense = (expense: Expense) => {
