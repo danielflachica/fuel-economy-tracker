@@ -5,8 +5,9 @@ import {
   Button,
   DatePicker,
   Portal,
-  Group,
   parseDate,
+  Field,
+  Flex,
 } from "@chakra-ui/react";
 import { LuCalendar } from "react-icons/lu";
 import { TbCurrencyPeso } from "react-icons/tb";
@@ -19,8 +20,14 @@ interface Props {
 }
 
 const AddExpenseForm = ({ onSubmitExpense }: Props) => {
-  const { register, handleSubmit, reset } = useForm<Expense>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Expense>();
   const todayISO = new Date().toISOString().split("T")[0];
+  const errorMsg = "This field is required.";
 
   const onSubmit = (data: Expense) => {
     onSubmitExpense(data);
@@ -29,17 +36,24 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} gap={4}>
-        <InputGroup>
+      <SimpleGrid
+        columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+        gap={4}
+        alignItems="start"
+      >
+        <Field.Root invalid={!!errors.date}>
           <DatePicker.Root
             defaultValue={[parseDate(todayISO)]}
             placeholder="Date (mm/dd/yyyy)"
             variant="subtle"
+            invalid={!!errors.date}
           >
-            <DatePicker.Label />
             <DatePicker.Control>
               <DatePicker.Input
-                {...register("date", { required: true, valueAsDate: true })}
+                {...register("date", {
+                  required: errorMsg,
+                  valueAsDate: true,
+                })}
               />
               <DatePicker.IndicatorGroup>
                 <DatePicker.Trigger>
@@ -66,45 +80,86 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
               </DatePicker.Positioner>
             </Portal>
           </DatePicker.Root>
-        </InputGroup>
+          {errors.date?.type === "required" && (
+            <Field.ErrorText>{errors.date.message}</Field.ErrorText>
+          )}
+        </Field.Root>
 
-        <InputGroup startElement={<FaCarAlt />}>
-          <Input
-            {...register("kmEnd", { required: true, valueAsNumber: true })}
-            placeholder="Kilometers (End)"
-            variant="subtle"
-          />
-        </InputGroup>
-
-        <InputGroup startElement={<FaCarAlt />}>
-          <Input
-            {...register("kmStart", { required: true, valueAsNumber: true })}
-            placeholder="Kilometers (Start)"
-            variant="subtle"
-          />
-        </InputGroup>
-
-        <InputGroup startElement={<FaGasPump />}>
-          <Input
-            {...register("liters", { required: true, valueAsNumber: true })}
-            placeholder="Liters Consumed"
-            variant="subtle"
-          />
-        </InputGroup>
-
-        <Group attached w="full" maxW="sm">
-          <InputGroup startElement={<TbCurrencyPeso />}>
+        <Field.Root invalid={!!errors.kmEnd}>
+          <InputGroup startElement={<FaCarAlt />}>
             <Input
-              {...register("gasPrice", { required: true, valueAsNumber: true })}
-              flex="1"
-              placeholder="Gas Price/Liter"
+              {...register("kmEnd", {
+                required: errorMsg,
+                valueAsNumber: true,
+              })}
+              placeholder="Kilometers (End)"
               variant="subtle"
             />
           </InputGroup>
-          <Button type="submit" bg="bg.subtle" variant="subtle">
+          {errors.kmEnd?.type === "required" && (
+            <Field.ErrorText>{errors.kmEnd.message}</Field.ErrorText>
+          )}
+        </Field.Root>
+
+        <Field.Root invalid={!!errors.kmStart}>
+          <InputGroup startElement={<FaCarAlt />}>
+            <Input
+              {...register("kmStart", {
+                required: errorMsg,
+                valueAsNumber: true,
+              })}
+              placeholder="Kilometers (Start)"
+              variant="subtle"
+            />
+          </InputGroup>
+          {errors.kmStart?.type === "required" && (
+            <Field.ErrorText>{errors.kmStart.message}</Field.ErrorText>
+          )}
+        </Field.Root>
+
+        <Field.Root invalid={!!errors.liters}>
+          <InputGroup startElement={<FaGasPump />}>
+            <Input
+              {...register("liters", {
+                required: errorMsg,
+                valueAsNumber: true,
+              })}
+              placeholder="Liters Consumed"
+              variant="subtle"
+            />
+          </InputGroup>
+          {errors.liters?.type === "required" && (
+            <Field.ErrorText>{errors.liters.message}</Field.ErrorText>
+          )}
+        </Field.Root>
+
+        <Flex alignItems="flex-start" gap={0}>
+          <Field.Root invalid={!!errors.gasPrice} flex="1">
+            <InputGroup startElement={<TbCurrencyPeso />}>
+              <Input
+                {...register("gasPrice", {
+                  required: errorMsg,
+                  valueAsNumber: true,
+                })}
+                placeholder="Gas Price/Liter"
+                variant="subtle"
+                borderRightRadius={0}
+              />
+            </InputGroup>
+            {errors.gasPrice && (
+              <Field.ErrorText>{errors.gasPrice.message}</Field.ErrorText>
+            )}
+          </Field.Root>
+          <Button
+            type="submit"
+            bg="bg.subtle"
+            variant="subtle"
+            borderLeftRadius={0}
+            flexShrink={0}
+          >
             Submit
           </Button>
-        </Group>
+        </Flex>
       </SimpleGrid>
     </form>
   );
