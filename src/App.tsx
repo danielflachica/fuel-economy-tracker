@@ -31,10 +31,8 @@ const App = () => {
   ];
 
   const addExpense = (data: Expense) => {
-    // TO-DO: Get ID from databse
-    const id = Math.floor(Math.random() * 1000) + 1;
-    setExpenses([...expenses, { ...data, id }]);
-    // setKmStart(data.kmEnd);
+    setExpenses([...expenses, data]);
+    setKmStart(data.kmEnd || 0);
   };
 
   const editExpense = (expense: Expense) => {
@@ -68,7 +66,7 @@ const App = () => {
               py={5}
               gap={8}
             >
-              <AddExpenseForm onSubmitExpense={addExpense} />
+              <AddExpenseForm kmStart={kmStart} onSubmitExpense={addExpense} />
               <ExpenseTable
                 columns={columns}
                 items={expenses}
