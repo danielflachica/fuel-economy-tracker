@@ -13,7 +13,6 @@ import ExpenseTable from "./components/expenses/Table";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { useState } from "react";
-import type { FieldValues } from "react-hook-form";
 
 const App = () => {
   const [kmStart, setKmStart] = useState(0);

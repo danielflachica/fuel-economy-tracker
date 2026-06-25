@@ -13,7 +13,8 @@ import { LuCalendar } from "react-icons/lu";
 import { TbCurrencyPeso } from "react-icons/tb";
 import { FaCarAlt, FaGasPump } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import type { Expense } from "@/types/Expense";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ExpenseSchema, type Expense } from "@/types/Expense";
 
 interface Props {
   onSubmitExpense: (data: Expense) => void;
@@ -25,9 +26,9 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Expense>();
+  } = useForm<Expense>({ resolver: zodResolver(ExpenseSchema) });
+
   const todayISO = new Date().toISOString().split("T")[0];
-  const errorMsg = "This field is required.";
 
   const onSubmit = (data: Expense) => {
     onSubmitExpense(data);
@@ -49,12 +50,7 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
             invalid={!!errors.date}
           >
             <DatePicker.Control>
-              <DatePicker.Input
-                {...register("date", {
-                  required: errorMsg,
-                  valueAsDate: true,
-                })}
-              />
+              <DatePicker.Input {...register("date")} />
               <DatePicker.IndicatorGroup>
                 <DatePicker.Trigger>
                   <LuCalendar />
@@ -80,7 +76,7 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
               </DatePicker.Positioner>
             </Portal>
           </DatePicker.Root>
-          {errors.date?.type === "required" && (
+          {errors.date && (
             <Field.ErrorText>{errors.date.message}</Field.ErrorText>
           )}
         </Field.Root>
@@ -88,15 +84,13 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
         <Field.Root invalid={!!errors.kmEnd}>
           <InputGroup startElement={<FaCarAlt />}>
             <Input
-              {...register("kmEnd", {
-                required: errorMsg,
-                valueAsNumber: true,
-              })}
+              {...register("kmEnd")}
               placeholder="Kilometers (End)"
               variant="subtle"
+              type="number"
             />
           </InputGroup>
-          {errors.kmEnd?.type === "required" && (
+          {errors.kmEnd && (
             <Field.ErrorText>{errors.kmEnd.message}</Field.ErrorText>
           )}
         </Field.Root>
@@ -104,15 +98,12 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
         <Field.Root invalid={!!errors.kmStart}>
           <InputGroup startElement={<FaCarAlt />}>
             <Input
-              {...register("kmStart", {
-                required: errorMsg,
-                valueAsNumber: true,
-              })}
+              {...register("kmStart")}
               placeholder="Kilometers (Start)"
               variant="subtle"
             />
           </InputGroup>
-          {errors.kmStart?.type === "required" && (
+          {errors.kmStart && (
             <Field.ErrorText>{errors.kmStart.message}</Field.ErrorText>
           )}
         </Field.Root>
@@ -120,15 +111,12 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
         <Field.Root invalid={!!errors.liters}>
           <InputGroup startElement={<FaGasPump />}>
             <Input
-              {...register("liters", {
-                required: errorMsg,
-                valueAsNumber: true,
-              })}
+              {...register("liters")}
               placeholder="Liters Consumed"
               variant="subtle"
             />
           </InputGroup>
-          {errors.liters?.type === "required" && (
+          {errors.liters && (
             <Field.ErrorText>{errors.liters.message}</Field.ErrorText>
           )}
         </Field.Root>
@@ -137,10 +125,7 @@ const AddExpenseForm = ({ onSubmitExpense }: Props) => {
           <Field.Root invalid={!!errors.gasPrice} flex="1">
             <InputGroup startElement={<TbCurrencyPeso />}>
               <Input
-                {...register("gasPrice", {
-                  required: errorMsg,
-                  valueAsNumber: true,
-                })}
+                {...register("gasPrice")}
                 placeholder="Gas Price/Liter"
                 variant="subtle"
                 borderRightRadius={0}
