@@ -40,11 +40,9 @@ const App = () => {
   };
 
   const deleteExpense = (expense: Expense) => {
-    setExpenses([...expenses].filter((e) => e.id !== expense.id));
-    // setKmStart(
-    //   expenses.findLast((e) => typeof e.kilometers.end === "number").kilometers
-    //     .end
-    // );
+    const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
+    setExpenses(filteredExpenses);
+    setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
   };
 
   return (
