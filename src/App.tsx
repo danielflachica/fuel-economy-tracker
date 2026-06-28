@@ -1,22 +1,17 @@
-import {
-  Button,
-  CloseButton,
-  Container,
-  Drawer,
-  Flex,
-  Portal,
-} from "@chakra-ui/react";
+import { useState } from "react";
+import { Container, Flex } from "@chakra-ui/react";
 import type { Column } from "@/types/Column";
 import type { Expense } from "@/types/Expense";
 import AddExpenseForm from "./components/expenses/AddForm";
 import ExpenseTable from "./components/expenses/Table";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { useState } from "react";
+import ExpenseDrawer from "./components/expenses/ExpenseDrawer";
 
 const App = () => {
   const [kmStart, setKmStart] = useState(0);
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [expense, setExpense] = useState<Expense | null>(null);
   const [open, setOpen] = useState(false);
 
   const columns: Column[] = [
@@ -33,6 +28,11 @@ const App = () => {
   const addExpense = (data: Expense) => {
     setExpenses([...expenses, data]);
     setKmStart(data.kmEnd || 0);
+  };
+
+  const openEditForm = (expense: Expense) => {
+    setExpense(expense);
+    setOpen(true);
   };
 
   const editExpense = (expense: Expense) => {
@@ -68,44 +68,23 @@ const App = () => {
               <ExpenseTable
                 columns={columns}
                 items={expenses}
-                onEdit={editExpense}
+                onEdit={openEditForm}
                 onDelete={deleteExpense}
               />
             </Flex>
           </Container>
         </Flex>
 
-        <Drawer.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
-          <Drawer.Trigger asChild>
-            <Button variant="outline" size="sm">
-              Open Drawer
-            </Button>
-          </Drawer.Trigger>
-          <Portal>
-            <Drawer.Backdrop />
-            <Drawer.Positioner>
-              <Drawer.Content>
-                <Drawer.Header>
-                  <Drawer.Title>Drawer Title</Drawer.Title>
-                </Drawer.Header>
-                <Drawer.Body>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
-                </Drawer.Body>
-                <Drawer.Footer>
-                  <Button variant="outline">Cancel</Button>
-                  <Button>Save</Button>
-                </Drawer.Footer>
-                <Drawer.CloseTrigger asChild>
-                  <CloseButton size="sm" />
-                </Drawer.CloseTrigger>
-              </Drawer.Content>
-            </Drawer.Positioner>
-          </Portal>
-        </Drawer.Root>
+        {expense && (
+          <ExpenseDrawer
+            formID="edit-expense-form"
+            expense={expense}
+            title="Edit Expense"
+            open={open}
+            setOpen={(e) => setOpen(e.open)}
+            onEditExpense={editExpense}
+          />
+        )}
 
         <Footer />
       </Flex>
