@@ -3,10 +3,11 @@ import { Container, Flex } from "@chakra-ui/react";
 import type { Column } from "@/types/Column";
 import type { Expense } from "@/types/Expense";
 import AddExpenseForm from "./components/expenses/AddForm";
+import EditExpenseForm from "./components/expenses/EditForm";
 import ExpenseTable from "./components/expenses/Table";
+import ExpenseDrawer from "./components/expenses/ExpenseDrawer";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import ExpenseDrawer from "./components/expenses/ExpenseDrawer";
 
 const App = () => {
   const [kmStart, setKmStart] = useState(0);
@@ -82,12 +83,16 @@ const App = () => {
         {expense && (
           <ExpenseDrawer
             formID="edit-expense-form"
-            expense={expense}
             title="Edit Expense"
             open={open}
             setOpen={(e) => setOpen(e.open)}
-            onEditExpense={editExpense}
-          />
+          >
+            <EditExpenseForm
+              formID="edit-expense-form"
+              expense={expense}
+              onEditExpense={editExpense}
+            />
+          </ExpenseDrawer>
         )}
 
         <Footer />
