@@ -35,8 +35,12 @@ const App = () => {
     setOpen(true);
   };
 
-  const editExpense = (expense: Expense) => {
-    console.log(expense);
+  const editExpense = (data: Expense) => {
+    const newExpenses = expenses.map((expense) =>
+      expense.id == data.id ? data : expense
+    );
+    setExpenses(newExpenses);
+    setOpen(false);
   };
 
   const deleteExpense = (expense: Expense) => {
