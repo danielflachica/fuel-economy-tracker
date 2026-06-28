@@ -6,3 +6,17 @@ export const numberRules = {
     return true;
   },
 };
+
+export const ph = new Intl.NumberFormat("en-PH", {
+  style: "currency",
+  currency: "PHP",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+export const dec = new Intl.NumberFormat("en-PH", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+export const num = new Intl.NumberFormat("en-PH");
