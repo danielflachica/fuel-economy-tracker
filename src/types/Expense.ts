@@ -8,6 +8,7 @@ export interface Expense {
 }
 
 export interface ExpenseFormValues {
+  id: number;
   date: Date;
   kmStart: string;
   kmEnd: string;
