@@ -64,11 +64,7 @@ const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <SimpleGrid
-        columns={{ base: 1, sm: 2, md: 3 }}
-        gap={4}
-        alignItems="start"
-      >
+      <SimpleGrid columns={{ base: 1, lg: 3 }} gap={4} alignItems="start">
         <Field.Root invalid={!!errors.kmEnd}>
           <InputGroup startElement={<FaCarAlt />}>
             <Input

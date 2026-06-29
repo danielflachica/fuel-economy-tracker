@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Container, Flex } from "@chakra-ui/react";
+import { Button, Container, Flex } from "@chakra-ui/react";
+import { IoMdAdd } from "react-icons/io";
 import type { Column } from "@/types/Column";
 import type { Expense } from "@/types/Expense";
 import AddExpenseForm from "./components/expenses/AddForm";
@@ -13,7 +14,8 @@ const App = () => {
   const [kmStart, setKmStart] = useState(0);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [expense, setExpense] = useState<Expense | null>(null);
-  const [open, setOpen] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
   const columns: Column[] = [
     { label: "Date", align: "start" },
@@ -29,11 +31,12 @@ const App = () => {
   const addExpense = (data: Expense) => {
     setExpenses([...expenses, data]);
     setKmStart(data.kmEnd || 0);
+    setOpenAdd(false);
   };
 
   const openEditForm = (expense: Expense) => {
     setExpense(expense);
-    setOpen(true);
+    setOpenEdit(true);
   };
 
   const editExpense = (data: Expense) => {
@@ -41,7 +44,7 @@ const App = () => {
       expense.id == data.id ? data : expense
     );
     setExpenses(newExpenses);
-    setOpen(false);
+    setOpenEdit(false);
   };
 
   const deleteExpense = (expense: Expense) => {
@@ -61,7 +64,10 @@ const App = () => {
           flex="1"
           justifyContent="space-between"
         >
-          <Container maxW="container.xl">
+          <Container
+            maxW="container.xl"
+            display={{ base: "none", lg: "block" }}
+          >
             <Flex
               direction="column"
               align="center"
@@ -84,8 +90,8 @@ const App = () => {
           <ExpenseDrawer
             formID="edit-expense-form"
             title="Edit Expense"
-            open={open}
-            setOpen={(e) => setOpen(e.open)}
+            open={openEdit}
+            setOpen={(e) => setOpenEdit(e.open)}
           >
             <EditExpenseForm
               formID="edit-expense-form"
@@ -94,6 +100,28 @@ const App = () => {
             />
           </ExpenseDrawer>
         )}
+
+        <ExpenseDrawer
+          formID="add-expense-form"
+          title="Add Expense"
+          open={openAdd}
+          setOpen={(e) => setOpenAdd(e.open)}
+        >
+          <AddExpenseForm kmStart={kmStart} onSubmitExpense={addExpense} />
+        </ExpenseDrawer>
+
+        <Button
+          display={{ base: "block", lg: "none" }}
+          rounded="full"
+          width="50px"
+          height="50px"
+          bottom={5}
+          right={5}
+          position="fixed"
+          onClick={() => setOpenAdd(true)}
+        >
+          <IoMdAdd />
+        </Button>
 
         <Footer />
       </Flex>

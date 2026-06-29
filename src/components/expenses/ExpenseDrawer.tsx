@@ -6,13 +6,13 @@ interface Props {
   formID: string;
   title: string;
   open: boolean;
-  setOpen: (open) => void;
+  setOpen: (open: any) => void;
 }
 
 const ExpenseDrawer = ({ children, formID, title, open, setOpen }: Props) => {
   return (
     <Drawer.Root
-      size="md"
+      size="xs"
       open={open}
       onOpenChange={setOpen}
       closeOnEscape={true}
