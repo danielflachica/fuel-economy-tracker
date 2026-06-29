@@ -93,7 +93,28 @@ const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
           )}
         </Field.Root>
 
-        <Flex alignItems="flex-start" gap={0}>
+        <Field.Root
+          display={{ base: "flex", lg: "none" }}
+          invalid={!!errors.gasPrice}
+        >
+          <InputGroup startElement={<TbCurrencyPeso />}>
+            <Input
+              {...register("gasPrice", numberRules)}
+              placeholder="Gas Price/Liter"
+              variant="subtle"
+              inputMode="decimal"
+            />
+          </InputGroup>
+          {errors.liters && (
+            <Field.ErrorText>{errors.liters.message}</Field.ErrorText>
+          )}
+        </Field.Root>
+
+        <Flex
+          display={{ base: "none", lg: "flex" }}
+          alignItems="flex-start"
+          gap={0}
+        >
           <Field.Root invalid={!!errors.gasPrice} flex="1">
             <InputGroup startElement={<TbCurrencyPeso />}>
               <Input

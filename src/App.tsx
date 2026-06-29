@@ -103,6 +103,7 @@ const App = () => {
 
         <ExpenseDrawer
           formID="add-expense-form"
+          action="Submit"
           title="Add Expense"
           open={openAdd}
           setOpen={(e) => setOpenAdd(e.open)}
@@ -118,6 +119,7 @@ const App = () => {
           bottom={5}
           right={5}
           position="fixed"
+          zIndex={10}
           onClick={() => setOpenAdd(true)}
         >
           <IoMdAdd />

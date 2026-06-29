@@ -4,12 +4,20 @@ import type { ReactNode } from "react";
 interface Props {
   children: ReactNode;
   formID: string;
+  action?: string;
   title: string;
   open: boolean;
   setOpen: (open: any) => void;
 }
 
-const ExpenseDrawer = ({ children, formID, title, open, setOpen }: Props) => {
+const ExpenseDrawer = ({
+  children,
+  formID,
+  action = "Save",
+  title,
+  open,
+  setOpen,
+}: Props) => {
   return (
     <Drawer.Root
       size="xs"
@@ -32,7 +40,7 @@ const ExpenseDrawer = ({ children, formID, title, open, setOpen }: Props) => {
                 <Button variant="outline">Cancel</Button>
               </Drawer.ActionTrigger>
               <Button type="submit" form={formID}>
-                Save
+                {action}
               </Button>
             </Drawer.Footer>
 
