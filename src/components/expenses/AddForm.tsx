@@ -26,7 +26,7 @@ const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
     formState: { errors },
   } = useForm<ExpenseFormValues>({
     defaultValues: {
-      date: new Date(),
+      date: new Date().toISOString().split("T")[0],
       kmStart: String(kmStart),
       kmEnd: "",
       liters: "",
@@ -44,7 +44,7 @@ const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
   const onSubmit = (data: ExpenseFormValues) => {
     const expense: Expense = {
       id: Math.floor(Math.random() * 1000) + 1, // random ID
-      date: data.date,
+      date: new Date(data.date),
       kmStart: Number(data.kmStart),
       kmEnd: Number(data.kmEnd),
       liters: Number(data.liters),
@@ -54,7 +54,7 @@ const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
     onSubmitExpense(expense);
 
     reset({
-      date: new Date(),
+      date: new Date().toISOString().split("T")[0],
       kmStart: String(data.kmEnd), // next kmStart = submitted kmEnd
       kmEnd: "",
       liters: "",

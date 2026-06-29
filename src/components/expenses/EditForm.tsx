@@ -3,7 +3,7 @@ import type { Expense, ExpenseFormValues } from "@/types/Expense";
 import { numberRules } from "@/utilities/utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FaCarAlt, FaGasPump } from "react-icons/fa";
+import { FaCalendar, FaCarAlt, FaGasPump } from "react-icons/fa";
 import { TbCurrencyPeso } from "react-icons/tb";
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 const EditExpenseForm = ({ formID, expense, onEditExpense }: Props) => {
   const defaultExpense = {
     id: expense.id,
-    date: expense.date,
+    date: expense.date ? expense.date.toISOString().split("T")[0] : "",
     kmStart: String(expense.kmStart),
     kmEnd: String(expense.kmEnd),
     liters: String(expense.liters),
@@ -32,12 +32,14 @@ const EditExpenseForm = ({ formID, expense, onEditExpense }: Props) => {
   });
 
   const onUpdate = (data: ExpenseFormValues) => {
-    const expenseEntries = Object.entries(data).map(([key, value]) => [
-      key,
-      key === "id" || key === "date" ? value : Number(value),
-    ]);
-    const expense = Object.fromEntries(expenseEntries);
-    onEditExpense(expense);
+    onEditExpense({
+      id: data.id,
+      date: new Date(data.date),
+      kmStart: Number(data.kmStart),
+      kmEnd: Number(data.kmEnd),
+      liters: Number(data.liters),
+      gasPrice: Number(data.gasPrice),
+    });
   };
 
   useEffect(() => {
@@ -47,20 +49,53 @@ const EditExpenseForm = ({ formID, expense, onEditExpense }: Props) => {
   return (
     <form id={formID} onSubmit={handleSubmit(onUpdate)}>
       <VStack>
+        <Field.Root invalid={!!errors.date}>
+          <Field.Label>
+            Date
+            <Field.RequiredIndicator />
+          </Field.Label>
+          <InputGroup startElement={<FaCalendar />}>
+            <Input
+              {...register("date", { required: "This field is required" })}
+              variant="subtle"
+              type="date"
+            />
+          </InputGroup>
+          {errors.date && (
+            <Field.ErrorText>{errors.date.message}</Field.ErrorText>
+          )}
+        </Field.Root>
+
         <Field.Root invalid={!!errors.kmEnd}>
           <Field.Label>
-            Kilometer Reading <Field.RequiredIndicator />
+            Kilometer Reading (End)
+            <Field.RequiredIndicator />
           </Field.Label>
           <InputGroup startElement={<FaCarAlt />}>
             <Input
               {...register("kmEnd", numberRules)}
               variant="subtle"
               inputMode="decimal"
-              defaultValue={expense.kmEnd ? expense.kmEnd.toString() : ""}
             />
           </InputGroup>
           {errors.kmEnd && (
             <Field.ErrorText>{errors.kmEnd.message}</Field.ErrorText>
+          )}
+        </Field.Root>
+
+        <Field.Root invalid={!!errors.kmStart}>
+          <Field.Label>
+            Kilometer Reading (Start) <Field.RequiredIndicator />
+          </Field.Label>
+          <InputGroup startElement={<FaCarAlt />}>
+            <Input
+              {...register("kmStart", numberRules)}
+              variant="subtle"
+              inputMode="decimal"
+            />
+          </InputGroup>
+          {errors.kmStart && (
+            <Field.ErrorText>{errors.kmStart.message}</Field.ErrorText>
           )}
         </Field.Root>
 
@@ -73,7 +108,6 @@ const EditExpenseForm = ({ formID, expense, onEditExpense }: Props) => {
               {...register("liters", numberRules)}
               variant="subtle"
               inputMode="decimal"
-              defaultValue={expense.liters ? expense.liters.toString() : ""}
             />
           </InputGroup>
           {errors.liters && (
@@ -90,7 +124,6 @@ const EditExpenseForm = ({ formID, expense, onEditExpense }: Props) => {
               {...register("gasPrice", numberRules)}
               variant="subtle"
               inputMode="decimal"
-              defaultValue={expense.gasPrice ? expense.gasPrice.toString() : ""}
             />
           </InputGroup>
           {errors.gasPrice && (
