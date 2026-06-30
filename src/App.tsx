@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Button, Container, Flex } from "@chakra-ui/react";
 import { IoMdAdd } from "react-icons/io";
-import type { Column } from "@/types/Column";
+import { columns } from "./utilities/utils";
 import type { Expense } from "@/types/Expense";
 import AddExpenseForm from "./components/expenses/AddForm";
 import EditExpenseForm from "./components/expenses/EditForm";
 import ExpenseTable from "./components/expenses/Table";
+import ExpenseList from "./components/expenses/List";
 import ExpenseDrawer from "./components/expenses/ExpenseDrawer";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -16,17 +17,6 @@ const App = () => {
   const [expense, setExpense] = useState<Expense | null>(null);
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-
-  const columns: Column[] = [
-    { label: "Date", align: "start" },
-    { label: "Km End", align: "start" },
-    { label: "Km Start", align: "start" },
-    { label: "Km", align: "start" },
-    { label: "L", align: "start" },
-    { label: "Km/L", align: "start" },
-    { label: "Gas Price/L", align: "end" },
-    { label: "Total Fuel Cost", align: "end" },
-  ];
 
   const addExpense = (data: Expense) => {
     setExpenses([...expenses, data]);
@@ -64,6 +54,7 @@ const App = () => {
           flex="1"
           justifyContent="space-between"
         >
+          {/* Desktop layout */}
           <Container
             maxW="container.xl"
             display={{ base: "none", lg: "block" }}
@@ -75,7 +66,11 @@ const App = () => {
               py={5}
               gap={8}
             >
-              <AddExpenseForm kmStart={kmStart} onSubmitExpense={addExpense} />
+              <AddExpenseForm
+                formID="add-expense-form-desktop"
+                kmStart={kmStart}
+                onSubmitExpense={addExpense}
+              />
               <ExpenseTable
                 columns={columns}
                 items={expenses}
@@ -83,6 +78,15 @@ const App = () => {
                 onDelete={deleteExpense}
               />
             </Flex>
+          </Container>
+
+          {/* Mobile layout */}
+          <Container
+            maxW="container.xl"
+            mt={5}
+            display={{ base: "block", lg: "none" }}
+          >
+            <ExpenseList items={expenses} />
           </Container>
         </Flex>
 
@@ -108,7 +112,11 @@ const App = () => {
           open={openAdd}
           setOpen={(e) => setOpenAdd(e.open)}
         >
-          <AddExpenseForm kmStart={kmStart} onSubmitExpense={addExpense} />
+          <AddExpenseForm
+            formID="add-expense-form"
+            kmStart={kmStart}
+            onSubmitExpense={addExpense}
+          />
         </ExpenseDrawer>
 
         <Button

@@ -1,7 +1,8 @@
 import type { Column } from "@/types/Column";
 import type { Expense } from "@/types/Expense";
 import { dec, num, ph } from "@/utilities/utils";
-import { Button, HStack, Table, Text } from "@chakra-ui/react";
+import { Button, HStack, Table } from "@chakra-ui/react";
+import NoRecordsFound from "../NoRecordsFound";
 
 interface Props {
   columns: Column[];
@@ -11,12 +12,7 @@ interface Props {
 }
 
 const ExpenseTable = ({ columns, items, onEdit, onDelete }: Props) => {
-  if (!items || items.length === 0)
-    return (
-      <Text color="fg.muted" fontSize="sm">
-        No records found.
-      </Text>
-    );
+  if (!items || items.length === 0) return <NoRecordsFound />;
 
   return (
     <Table.Root size="sm" variant="outline">

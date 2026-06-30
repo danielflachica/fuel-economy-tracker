@@ -14,11 +14,12 @@ import { useEffect } from "react";
 import { numberRules } from "@/utilities/utils";
 
 interface Props {
+  formID: string;
   kmStart: number;
   onSubmitExpense: (data: Expense) => void;
 }
 
-const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
+const AddExpenseForm = ({ formID, kmStart, onSubmitExpense }: Props) => {
   const {
     register,
     handleSubmit,
@@ -63,7 +64,7 @@ const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form id={formID} onSubmit={handleSubmit(onSubmit)}>
       <SimpleGrid columns={{ base: 1, lg: 3 }} gap={4} alignItems="start">
         <Field.Root invalid={!!errors.kmEnd}>
           <InputGroup startElement={<FaCarAlt />}>
@@ -93,33 +94,12 @@ const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
           )}
         </Field.Root>
 
-        <Field.Root
-          display={{ base: "flex", lg: "none" }}
-          invalid={!!errors.gasPrice}
-        >
-          <InputGroup startElement={<TbCurrencyPeso />}>
-            <Input
-              {...register("gasPrice", numberRules)}
-              placeholder="Gas Price/Liter"
-              variant="subtle"
-              inputMode="decimal"
-            />
-          </InputGroup>
-          {errors.liters && (
-            <Field.ErrorText>{errors.liters.message}</Field.ErrorText>
-          )}
-        </Field.Root>
-
-        <Flex
-          display={{ base: "none", lg: "flex" }}
-          alignItems="flex-start"
-          gap={0}
-        >
+        <Flex alignItems="flex-start" gap={0}>
           <Field.Root invalid={!!errors.gasPrice} flex="1">
             <InputGroup startElement={<TbCurrencyPeso />}>
               <Input
                 {...register("gasPrice", numberRules)}
-                borderRightRadius={0}
+                borderRightRadius={{ base: "md", lg: 0 }}
                 placeholder="Gas Price/Liter"
                 variant="subtle"
                 inputMode="decimal"
@@ -133,8 +113,9 @@ const AddExpenseForm = ({ kmStart, onSubmitExpense }: Props) => {
             type="submit"
             bg="bg.subtle"
             variant="subtle"
-            borderLeftRadius={0}
+            borderLeftRadius={{ base: "md", lg: 0 }}
             flexShrink={0}
+            display={{ base: "none", lg: "flex" }}
           >
             Submit
           </Button>
