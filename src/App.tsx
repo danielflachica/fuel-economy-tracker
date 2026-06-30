@@ -36,6 +36,7 @@ const App = () => {
       expense.id == data.id ? data : expense
     );
     setExpenses(newExpenses);
+    setExpense(null);
     setOpenEdit(false);
   };
 
@@ -48,6 +49,7 @@ const App = () => {
     const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
     setExpenses(filteredExpenses);
     setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
+    setExpense(null);
     setOpenModal(false);
   };
 
