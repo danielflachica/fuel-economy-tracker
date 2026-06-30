@@ -81,8 +81,8 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
             </Text>
           </VStack>
           <Separator orientation="vertical" height="12" />
-          <VStack alignItems="flex-start" gap={1} width="auto">
-            <HStack justifyContent="space-between" w="100%">
+          <VStack alignItems="flex-start" gap={1} width="auto" flex={1}>
+            <HStack justifyContent="space-between" alignItems="center" w="100%">
               <Text fontSize="xs" fontWeight="bold" color="fg.muted">
                 Distance
               </Text>
@@ -90,7 +90,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
                 {num.format(distance)} km
               </Text>
             </HStack>
-            <HStack justifyContent="space-between" w="100%">
+            <HStack justifyContent="space-between" alignItems="center" w="100%">
               <Text fontSize="xs" fontWeight="bold" color="fg.muted">
                 Liters
               </Text>
