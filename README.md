@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# Fuel Economy Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple, responsive web app for logging vehicle fuel expenses and tracking fuel efficiency (km/L) over time.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Add expenses** — log kilometer readings, liters consumed, and gas price per liter
+- **Auto-calculated metrics** — distance traveled, fuel efficiency (km/L), and total fuel cost are derived automatically from your inputs
+- **Edit & delete** — update or remove past entries via a drawer-based form and confirmation modal
+- **Responsive layouts** — a desktop table view and a mobile-first card view, switching automatically based on screen size
+- **Form validation** — required fields, numeric type-checking, and date validation powered by React Hook Form
+- **Sequential km tracking** — the starting kilometer reading for a new entry is automatically pre-filled from the previous entry's ending reading
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) — build tool & dev server
+- [Chakra UI v3](https://chakra-ui.com/) — component library and styling
+- [React Hook Form](https://react-hook-form.com/) — form state and validation
+- [React Icons](https://react-icons.github.io/react-icons/) — icon set
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js (LTS recommended)
+- npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone <repo-url>
+cd fuel-economy-tracker
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+The app will be available at `http://localhost:5173` (or the port Vite assigns).
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview production build
+
+```bash
+npm run preview
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── expenses/
+│   │   ├── AddForm.tsx        # Form for adding a new expense
+│   │   ├── EditForm.tsx       # Form for editing an existing expense
+│   │   ├── ExpenseDrawer.tsx  # Drawer wrapper for add/edit forms
+│   │   ├── Table.tsx          # Desktop table view
+│   │   ├── List.tsx           # Mobile list view
+│   │   └── Card.tsx           # Individual expense card (mobile)
+│   ├── Modal.tsx               # Generic confirmation modal
+│   ├── Navbar.tsx
+│   └── Footer.tsx
+├── types/
+│   └── Expense.ts              # Expense data model & form value types
+├── utilities/
+│   └── utils.ts                # Formatters, validation rules, column config
+├── App.tsx
+└── main.tsx
+```
+
+## Notes
+
+- Expense data is currently held in local React state (no backend/persistence yet).
+- IDs are generated client-side as a placeholder until a database is integrated.
+
+## License
+
+MIT
