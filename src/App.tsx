@@ -8,6 +8,7 @@ import EditExpenseForm from "./components/expenses/EditForm";
 import ExpenseTable from "./components/expenses/Table";
 import ExpenseList from "./components/expenses/List";
 import ExpenseDrawer from "./components/expenses/ExpenseDrawer";
+import Modal from "./components/Modal";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -17,6 +18,7 @@ const App = () => {
   const [expense, setExpense] = useState<Expense | null>(null);
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const addExpense = (data: Expense) => {
     setExpenses([...expenses, data]);
@@ -37,10 +39,16 @@ const App = () => {
     setOpenEdit(false);
   };
 
+  const openDeleteModal = (expense: Expense) => {
+    setExpense(expense);
+    setOpenModal(true);
+  };
+
   const deleteExpense = (expense: Expense) => {
     const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
     setExpenses(filteredExpenses);
     setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
+    setOpenModal(false);
   };
 
   return (
@@ -75,7 +83,7 @@ const App = () => {
                 columns={columns}
                 items={expenses}
                 onEdit={openEditForm}
-                onDelete={deleteExpense}
+                onDelete={openDeleteModal}
               />
             </Flex>
           </Container>
@@ -89,7 +97,7 @@ const App = () => {
             <ExpenseList
               items={expenses}
               onEdit={openEditForm}
-              onDelete={deleteExpense}
+              onDelete={openDeleteModal}
             />
           </Container>
         </Flex>
@@ -136,6 +144,23 @@ const App = () => {
         >
           <IoMdAdd />
         </Button>
+
+        {expense && (
+          <Modal<Expense>
+            open={openModal}
+            setOpen={(e) => setOpenModal(e.open)}
+            item={expense}
+            title="Please confirm"
+            size="sm"
+            action="delete"
+            colorPalette="red"
+            onConfirm={deleteExpense}
+          >
+            You are about to delete this expense from{" "}
+            <code>{expense.date.toLocaleDateString()}</code>. This action cannot
+            be undone. Are you sure you want to proceed?
+          </Modal>
+        )}
 
         <Footer />
       </Flex>
