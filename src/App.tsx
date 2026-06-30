@@ -55,11 +55,12 @@ const App = () => {
 
   return (
     <>
-      <Flex direction="column" minH="100dvh">
+      <Flex direction="column" minH="100dvh" bg="blackAlpha.50">
         <Navbar />
 
         <Flex
           as="main"
+          pt="60px"
           direction="column"
           flex="1"
           justifyContent="space-between"
@@ -74,7 +75,7 @@ const App = () => {
               align="center"
               textAlign="center"
               py={5}
-              gap={8}
+              gap={5}
             >
               <AddExpenseForm
                 formID="add-expense-form-desktop"
