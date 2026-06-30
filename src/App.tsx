@@ -134,10 +134,14 @@ const App = () => {
         </ExpenseDrawer>
 
         <Button
-          display={{ base: "block", lg: "none" }}
+          display={{ base: "flex", lg: "none" }}
+          alignItems="center"
+          justifyContent="center"
           rounded="full"
           width="50px"
           height="50px"
+          minW="50px"
+          padding={0}
           bottom={5}
           right={5}
           position="fixed"
