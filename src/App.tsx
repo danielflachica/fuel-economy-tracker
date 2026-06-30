@@ -86,7 +86,11 @@ const App = () => {
             mt={5}
             display={{ base: "block", lg: "none" }}
           >
-            <ExpenseList items={expenses} onDelete={deleteExpense} />
+            <ExpenseList
+              items={expenses}
+              onEdit={openEditForm}
+              onDelete={deleteExpense}
+            />
           </Container>
         </Flex>
 

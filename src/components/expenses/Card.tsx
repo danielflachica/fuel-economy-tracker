@@ -13,10 +13,11 @@ import { FaArrowRight } from "react-icons/fa6";
 
 interface Props {
   expense: Expense;
+  onEdit: (expense: Expense) => void;
   onDelete: (expense: Expense) => void;
 }
 
-const ExpenseCard = ({ expense, onDelete }: Props) => {
+const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
   const distance = expense.kmEnd - expense.kmStart;
   const fuelEfficiency = distance / expense.liters;
   const totalFuelCost = expense.liters * expense.gasPrice;
@@ -42,7 +43,12 @@ const ExpenseCard = ({ expense, onDelete }: Props) => {
             </HStack>
           </VStack>
           <Box gap={2} display="flex">
-            <Button variant="outline" size="xs" color="blue.300">
+            <Button
+              variant="outline"
+              size="xs"
+              color="blue.300"
+              onClick={() => onEdit(expense)}
+            >
               Edit
             </Button>
             <Button
