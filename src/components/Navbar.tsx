@@ -10,13 +10,14 @@ const Navbar = () => {
       left={0}
       zIndex={1}
       w="100%"
-      h="60px"
+      h={{ base: "50px", lg: "60px" }}
       paddingX={{ base: 2, lg: 4 }}
       justifyContent="space-between"
+      alignItems="center"
       bg="bg.subtle"
       boxShadow="xs"
     >
-      <Heading as="h1" marginLeft={2} fontSize="2xl">
+      <Heading as="h1" marginLeft={2} fontSize={{ base: "lg", lg: "2xl" }}>
         Fuel Expense Tracker
       </Heading>
     </HStack>

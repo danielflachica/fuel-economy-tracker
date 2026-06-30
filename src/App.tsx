@@ -60,7 +60,7 @@ const App = () => {
 
         <Flex
           as="main"
-          pt="60px"
+          pt={{ base: "50px", lg: "60px" }}
           direction="column"
           flex="1"
           justifyContent="space-between"
