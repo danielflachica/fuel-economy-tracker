@@ -86,7 +86,7 @@ const App = () => {
             mt={5}
             display={{ base: "block", lg: "none" }}
           >
-            <ExpenseList items={expenses} />
+            <ExpenseList items={expenses} onDelete={deleteExpense} />
           </Container>
         </Flex>
 
