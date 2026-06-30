@@ -18,7 +18,7 @@ const Navbar = () => {
       boxShadow="xs"
     >
       <Heading as="h1" marginLeft={2} fontSize={{ base: "lg", lg: "2xl" }}>
-        Fuel Expense Tracker
+        Fuel Economy Tracker
       </Heading>
     </HStack>
   );
