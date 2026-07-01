@@ -16,7 +16,7 @@ const ExpenseTable = ({ columns, items, onEdit, onDelete }: Props) => {
 
   return (
     <Table.Root size="sm" variant="outline">
-      <Table.Header>
+      <Table.Header bg={"bg.panel"}>
         <Table.Row>
           {columns.map((col) => (
             <Table.ColumnHeader key={col.label} textAlign={col.align}>
@@ -45,7 +45,8 @@ const ExpenseTable = ({ columns, items, onEdit, onDelete }: Props) => {
               <HStack justify="flex-end">
                 <Button
                   type="button"
-                  colorPalette="blue"
+                  colorPalette="brand"
+                  color="brand.400"
                   size="xs"
                   variant="ghost"
                   onClick={() => onEdit(item)}
@@ -55,6 +56,7 @@ const ExpenseTable = ({ columns, items, onEdit, onDelete }: Props) => {
                 <Button
                   type="button"
                   colorPalette="red"
+                  color="red.400"
                   size="xs"
                   variant="ghost"
                   onClick={() => onDelete(item)}

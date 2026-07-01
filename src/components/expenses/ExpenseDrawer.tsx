@@ -39,7 +39,12 @@ const ExpenseDrawer = ({
               <Drawer.ActionTrigger asChild>
                 <Button variant="outline">Cancel</Button>
               </Drawer.ActionTrigger>
-              <Button type="submit" form={formID}>
+              <Button
+                type="submit"
+                form={formID}
+                colorPalette="brand"
+                variant="solid"
+              >
                 {action}
               </Button>
             </Drawer.Footer>

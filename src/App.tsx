@@ -147,6 +147,7 @@ const App = () => {
           right={5}
           position="fixed"
           zIndex={10}
+          colorPalette="brand"
           onClick={() => setOpenAdd(true)}
         >
           <IoMdAdd />

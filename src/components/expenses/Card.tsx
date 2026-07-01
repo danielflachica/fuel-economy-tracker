@@ -31,7 +31,8 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
             fontSize="xs"
             fontWeight="bold"
             color="fg.subtle"
-            gap="0.25"
+            gap="0"
+            mb="-1"
           >
             <Text>{expense.date.toDateString()}</Text>
             <HStack gap={0.5}>
@@ -46,7 +47,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
             <Button
               variant="outline"
               size="xs"
-              color="blue.300"
+              color="brand.300"
               onClick={() => onEdit(expense)}
             >
               Edit
@@ -54,7 +55,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
             <Button
               variant="outline"
               size="xs"
-              color="red.300"
+              color="red.400"
               onClick={() => onDelete(expense)}
             >
               Delete
@@ -76,9 +77,14 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
             <Text fontSize="2xs" fontWeight="bold" color="fg.muted">
               FUEL EFFICIENCY
             </Text>
-            <Text fontSize="xl" fontWeight="bold">
-              {dec.format(fuelEfficiency)} km/L
-            </Text>
+            <HStack alignItems="center" gap={1.5}>
+              <Text fontSize="3xl" fontWeight="bold" color="brand.500">
+                {dec.format(fuelEfficiency)}
+              </Text>
+              <Text fontSize="sm" fontWeight="bold" color="fg.subtle" mt={1.5}>
+                km/L
+              </Text>
+            </HStack>
           </VStack>
           <Separator orientation="vertical" height="12" />
           <VStack alignItems="flex-start" gap={1} width="auto" flex={1}>
@@ -107,7 +113,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
             <Text fontSize="2xs" fontWeight="bold" color="fg.muted">
               GAS PRICE
             </Text>
-            <Text fontSize="sm" fontWeight="bold">
+            <Text fontSize="md" fontWeight="bold">
               {ph.format(expense.gasPrice)}/L
             </Text>
           </VStack>
@@ -115,7 +121,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
             <Text fontSize="2xs" fontWeight="bold" color="fg.muted">
               TOTAL FUEL COST
             </Text>
-            <Text fontSize="sm" fontWeight="bold">
+            <Text fontSize="md" fontWeight="bold">
               {ph.format(totalFuelCost)}
             </Text>
           </VStack>

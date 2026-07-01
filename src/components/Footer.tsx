@@ -5,7 +5,7 @@ const Footer = () => {
 
   return (
     <Box as="footer" p={4} mt="auto">
-      <Text fontSize="xs" opacity="65%" textAlign="center">
+      <Text fontSize="xs" color="fg.subtle" textAlign="center">
         &copy; {year + " "}
         <a
           href="https://github.com/danielflachica/wordle-clone"

@@ -111,8 +111,8 @@ const AddExpenseForm = ({ formID, kmStart, onSubmitExpense }: Props) => {
           </Field.Root>
           <Button
             type="submit"
-            bg="bg.subtle"
-            variant="subtle"
+            colorPalette="brand"
+            variant="solid"
             borderLeftRadius={{ base: "md", lg: 0 }}
             flexShrink={0}
             display={{ base: "none", lg: "flex" }}
