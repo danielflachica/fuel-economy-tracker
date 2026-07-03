@@ -12,10 +12,10 @@ const Navbar = () => {
       w="100%"
       h={{ base: "50px", lg: "60px" }}
       paddingX={{ base: 2, lg: 4 }}
-      justifyContent="space-between"
+      justifyContent={{ base: "center", lg: "space-between" }}
       alignItems="center"
       bg="bg.subtle"
-      boxShadow="xs"
+      boxShadow="bottom-xs"
     >
       <Heading as="h1" marginLeft={2} fontSize={{ base: "lg", lg: "2xl" }}>
         Fuel Economy Tracker

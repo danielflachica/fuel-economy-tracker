@@ -7,7 +7,7 @@ const customConfig = defineConfig({
         brand: {
           50: { value: "#E0F2F1" },
           100: { value: "#B2DFDB" },
-          200: { value: "#80CBC4" },
+          200: { value: "#00695C" },
           300: { value: "#4DB6AC" },
           400: { value: "#26A69A" },
           500: { value: "#009688" },
@@ -16,6 +16,10 @@ const customConfig = defineConfig({
           800: { value: "#00695C" },
           900: { value: "#004D40" },
         },
+      },
+      shadows: {
+        "bottom-xs": { value: "0 1px 3px 0 rgba(0, 0, 0, 0.3)" },
+        "bottom-sm": { value: "0 2px 6px 0 rgba(0, 0, 0, 0.4)" },
       },
     },
     semanticTokens: {
@@ -28,7 +32,7 @@ const customConfig = defineConfig({
             value: { _light: "{colors.gray.50}", _dark: "#0f172a" },
           },
           muted: {
-            value: { _light: "{colors.gray.100}", _dark: "#020617" },
+            value: { _light: "{colors.gray.100}", _dark: "#0d1424" },
           },
           panel: {
             value: { _light: "{colors.gray.100}", _dark: "#0f172a" },

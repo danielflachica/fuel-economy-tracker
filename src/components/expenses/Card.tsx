@@ -34,7 +34,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
             gap="0"
             mb="-1"
           >
-            <Text>{expense.date.toDateString()}</Text>
+            <Text color="fg.muted">{expense.date.toDateString()}</Text>
             <HStack gap={0.5}>
               <Text>{num.format(expense.kmStart)}</Text>
               <Text>
@@ -73,21 +73,26 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <VStack alignItems="flex-start" gap="0.25" width="auto">
+          <VStack alignItems="flex-start" gap={0} width="auto" bg="">
             <Text fontSize="2xs" fontWeight="bold" color="fg.muted">
               FUEL EFFICIENCY
             </Text>
-            <HStack alignItems="center" gap={1.5}>
-              <Text fontSize="3xl" fontWeight="bold" color="brand.500">
+            <HStack alignItems="flex-end" gap={1.5}>
+              <Text
+                fontSize="3xl"
+                fontWeight="bold"
+                color="brand.500"
+                mb="-8px"
+              >
                 {dec.format(fuelEfficiency)}
               </Text>
-              <Text fontSize="sm" fontWeight="bold" color="fg.subtle" mt={1.5}>
+              <Text fontSize="sm" fontWeight="bold" color="fg.subtle" mb="-1px">
                 km/L
               </Text>
             </HStack>
           </VStack>
-          <Separator orientation="vertical" height="12" />
-          <VStack alignItems="flex-start" gap={1} width="auto" flex={1}>
+          <Separator orientation="vertical" height="14" />
+          <VStack alignItems="flex-start" gap={2} width="auto" flex={1}>
             <HStack justifyContent="space-between" alignItems="center" w="100%">
               <Text fontSize="xs" fontWeight="bold" color="fg.muted">
                 Distance
