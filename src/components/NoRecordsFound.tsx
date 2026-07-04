@@ -1,14 +1,27 @@
-import { Text } from "@chakra-ui/react";
+import { EmptyState, VStack } from "@chakra-ui/react";
+import { FaCarAlt } from "react-icons/fa";
 
 interface Props {
+  title?: string;
   message?: string;
 }
 
-const NoRecordsFound = ({ message = "No records found." }: Props) => {
+const NoRecordsFound = ({
+  title = "Ready to hit the road?",
+  message = "No records found. Add an expense to get started.",
+}: Props) => {
   return (
-    <Text color="fg.muted" fontSize="sm" mx="auto" textAlign="center">
-      {message}
-    </Text>
+    <EmptyState.Root mt="-2em">
+      <EmptyState.Content>
+        <EmptyState.Indicator>
+          <FaCarAlt />
+        </EmptyState.Indicator>
+        <VStack textAlign="center">
+          <EmptyState.Title>{title}</EmptyState.Title>
+          <EmptyState.Description>{message}</EmptyState.Description>
+        </VStack>
+      </EmptyState.Content>
+    </EmptyState.Root>
   );
 };
 
