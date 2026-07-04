@@ -66,6 +66,22 @@ const EditExpenseForm = ({ formID, expense, onEditExpense }: Props) => {
           )}
         </Field.Root>
 
+        <Field.Root invalid={!!errors.kmStart}>
+          <Field.Label>
+            Kilometer Reading (Start) <Field.RequiredIndicator />
+          </Field.Label>
+          <InputGroup startElement={<FaCarAlt />}>
+            <Input
+              {...register("kmStart", numberRules)}
+              variant="subtle"
+              inputMode="decimal"
+            />
+          </InputGroup>
+          {errors.kmStart && (
+            <Field.ErrorText>{errors.kmStart.message}</Field.ErrorText>
+          )}
+        </Field.Root>
+
         <Field.Root invalid={!!errors.kmEnd}>
           <Field.Label>
             Kilometer Reading (End)
@@ -80,22 +96,6 @@ const EditExpenseForm = ({ formID, expense, onEditExpense }: Props) => {
           </InputGroup>
           {errors.kmEnd && (
             <Field.ErrorText>{errors.kmEnd.message}</Field.ErrorText>
-          )}
-        </Field.Root>
-
-        <Field.Root invalid={!!errors.kmStart}>
-          <Field.Label>
-            Kilometer Reading (Start) <Field.RequiredIndicator />
-          </Field.Label>
-          <InputGroup startElement={<FaCarAlt />}>
-            <Input
-              {...register("kmStart", numberRules)}
-              variant="subtle"
-              inputMode="decimal"
-            />
-          </InputGroup>
-          {errors.kmStart && (
-            <Field.ErrorText>{errors.kmStart.message}</Field.ErrorText>
           )}
         </Field.Root>
 
