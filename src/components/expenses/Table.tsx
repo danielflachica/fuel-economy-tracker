@@ -30,8 +30,8 @@ const ExpenseTable = ({ columns, items, onEdit, onDelete }: Props) => {
         {items.map((item) => (
           <Table.Row key={item.id}>
             <Table.Cell>{item.date.toDateString()}</Table.Cell>
-            <Table.Cell>{num.format(item.kmEnd)}</Table.Cell>
             <Table.Cell>{num.format(item.kmStart)}</Table.Cell>
+            <Table.Cell>{num.format(item.kmEnd)}</Table.Cell>
             <Table.Cell>{num.format(item.kmEnd - item.kmStart)}</Table.Cell>
             <Table.Cell>{dec.format(item.liters)}</Table.Cell>
             <Table.Cell>

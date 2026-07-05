@@ -25,8 +25,8 @@ export const num = new Intl.NumberFormat("en-PH");
 
 export const columns: Column[] = [
   { label: "Date", align: "start" },
-  { label: "Km End", align: "start" },
   { label: "Km Start", align: "start" },
+  { label: "Km End", align: "start" },
   { label: "Km", align: "start" },
   { label: "L", align: "start" },
   { label: "Km/L", align: "start" },
