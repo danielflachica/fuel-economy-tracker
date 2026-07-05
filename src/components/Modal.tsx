@@ -8,6 +8,7 @@ interface Props<T> {
   action?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "cover" | "full";
   colorPalette?: "red" | "blue" | "green" | "yellow" | "gray" | "";
+  showCancelButton?: boolean;
   item: T;
   open: boolean;
   setOpen: (open: { open: boolean }) => void;
@@ -21,6 +22,7 @@ const Modal = <T,>({
   action = "save",
   size = "md",
   colorPalette = "",
+  showCancelButton = true,
   item,
   open,
   setOpen,
@@ -46,9 +48,11 @@ const Modal = <T,>({
             )}
             {children && <Dialog.Body>{children}</Dialog.Body>}
             <Dialog.Footer>
-              <Dialog.ActionTrigger asChild>
-                <Button variant="outline">Cancel</Button>
-              </Dialog.ActionTrigger>
+              {showCancelButton && (
+                <Dialog.ActionTrigger asChild>
+                  <Button variant="outline">Cancel</Button>
+                </Dialog.ActionTrigger>
+              )}
               <Button
                 onClick={() => onConfirm(item)}
                 textTransform="capitalize"
