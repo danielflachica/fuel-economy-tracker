@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { Button, Container, Flex } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Button, Container, Flex, Spinner } from "@chakra-ui/react";
 import { IoMdAdd } from "react-icons/io";
 import { columns } from "./utilities/utils";
 import type { Expense } from "@/types/Expense";
+import useExpenses from "./hooks/useExpenses";
 import AddExpenseForm from "./components/expenses/AddForm";
 import EditExpenseForm from "./components/expenses/EditForm";
 import ExpenseTable from "./components/expenses/Table";
@@ -13,12 +14,13 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 const App = () => {
-  const [kmStart, setKmStart] = useState(0);
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const { expenses, setExpenses, kmStart, setKmStart, error, isLoading } =
+    useExpenses();
   const [expense, setExpense] = useState<Expense | null>(null);
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   const addExpense = (data: Expense) => {
     setExpenses([...expenses, data]);
@@ -33,7 +35,7 @@ const App = () => {
 
   const editExpense = (data: Expense) => {
     const newExpenses = expenses.map((expense) =>
-      expense.id == data.id ? data : expense
+      expense.id == data.id ? data : expense,
     );
     setExpenses(newExpenses);
     setExpense(null);
@@ -52,6 +54,10 @@ const App = () => {
     setExpense(null);
     setOpenModal(false);
   };
+
+  useEffect(() => {
+    if (error) setOpenError(true);
+  }, [error]);
 
   return (
     <>
@@ -77,6 +83,7 @@ const App = () => {
               py={5}
               gap={5}
             >
+              {isLoading && <Spinner />}
               <AddExpenseForm
                 formID="add-expense-form-desktop"
                 kmStart={kmStart}
@@ -97,6 +104,7 @@ const App = () => {
             mt={5}
             display={{ base: "block", lg: "none" }}
           >
+            {isLoading && <Spinner />}
             <ExpenseList
               items={expenses}
               onEdit={openEditForm}
@@ -167,6 +175,22 @@ const App = () => {
             You are about to delete this expense from{" "}
             <code>{expense.date.toLocaleDateString()}</code>. This action cannot
             be undone. Are you sure you want to proceed?
+          </Modal>
+        )}
+
+        {error && (
+          <Modal
+            open={openError}
+            setOpen={(e) => setOpenError(e.open)}
+            item={null}
+            title="Error"
+            size="sm"
+            action="close"
+            colorPalette="red"
+            showCancelButton={false}
+            onConfirm={() => setOpenError(false)}
+          >
+            {error}
           </Modal>
         )}
 

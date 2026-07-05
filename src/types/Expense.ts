@@ -15,3 +15,12 @@ export interface ExpenseFormValues {
   liters: string;
   gasPrice: string;
 }
+
+export interface ExpenseDatabaseRow {
+  id: number;
+  expense_date: string;
+  km_start: number;
+  km_end: number;
+  liters_consumed: number;
+  gas_price: number;
+}
