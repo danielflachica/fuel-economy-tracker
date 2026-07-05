@@ -13,16 +13,16 @@ const fromDB = (row: ExpenseDatabaseRow): Expense => {
   };
 };
 
-const toDB = (expense: Expense): ExpenseDatabaseRow => {
-  return {
-    id: expense.id,
-    expense_date: expense.date.toISOString(),
-    km_start: expense.kmStart,
-    km_end: expense.kmEnd,
-    liters_consumed: expense.liters,
-    gas_price: expense.gasPrice,
-  };
-};
+// const toDB = (expense: Expense): ExpenseDatabaseRow => {
+//   return {
+//     id: expense.id,
+//     expense_date: expense.date.toISOString(),
+//     km_start: expense.kmStart,
+//     km_end: expense.kmEnd,
+//     liters_consumed: expense.liters,
+//     gas_price: expense.gasPrice,
+//   };
+// };
 
 export const getExpenses = async (): Promise<Expense[]> => {
   const { data, error } = await supabase
