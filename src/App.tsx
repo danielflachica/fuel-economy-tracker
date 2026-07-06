@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Flex, For, VStack } from "@chakra-ui/react";
+import { Button, Container, Flex, For, SimpleGrid } from "@chakra-ui/react";
 import { IoMdAdd } from "react-icons/io";
 import { columns, skeletonCount } from "./utilities/utils";
 import type { Expense } from "@/types/Expense";
@@ -109,14 +109,14 @@ const App = () => {
             display={{ base: "block", lg: "none" }}
           >
             {isLoading && (
-              <VStack width="full" gap={4}>
+              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={5} w="100%">
                 <For
                   each={Array(skeletonCount).fill(null)}
                   fallback={<SkeletonCard />}
                 >
                   {(_, index) => <SkeletonCard key={index} />}
                 </For>
-              </VStack>
+              </SimpleGrid>
             )}
             {expenses && !isLoading && (
               <ExpenseList
