@@ -1,8 +1,8 @@
 import type { Expense } from "@/types/Expense";
 import { dec, num, ph } from "@/utilities/utils";
 import {
-  Box,
   Button,
+  ButtonGroup,
   Card,
   HStack,
   Separator,
@@ -43,24 +43,14 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
               <Text>{num.format(expense.kmEnd)} km</Text>
             </HStack>
           </VStack>
-          <Box gap={2} display="flex">
-            <Button
-              variant="outline"
-              size="xs"
-              color="brand.300"
-              onClick={() => onEdit(expense)}
-            >
+          <ButtonGroup gap={2} size="xs" variant="outline">
+            <Button color="brand.300" onClick={() => onEdit(expense)}>
               Edit
             </Button>
-            <Button
-              variant="outline"
-              size="xs"
-              color="red.400"
-              onClick={() => onDelete(expense)}
-            >
+            <Button color="red.400" onClick={() => onDelete(expense)}>
               Delete
             </Button>
-          </Box>
+          </ButtonGroup>
         </HStack>
       </Card.Header>
       <Card.Body>

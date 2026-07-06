@@ -33,3 +33,5 @@ export const columns: Column[] = [
   { label: "Gas Price/L", align: "end" },
   { label: "Total Fuel Cost", align: "end" },
 ];
+
+export const skeletonCount = 3;

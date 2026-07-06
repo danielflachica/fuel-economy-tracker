@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Flex, Spinner } from "@chakra-ui/react";
+import { Button, Container, Flex, For, VStack } from "@chakra-ui/react";
 import { IoMdAdd } from "react-icons/io";
-import { columns } from "./utilities/utils";
+import { columns, skeletonCount } from "./utilities/utils";
 import type { Expense } from "@/types/Expense";
 import useExpenses from "./hooks/useExpenses";
 import AddExpenseForm from "./components/expenses/AddForm";
@@ -9,6 +9,8 @@ import EditExpenseForm from "./components/expenses/EditForm";
 import ExpenseTable from "./components/expenses/Table";
 import ExpenseList from "./components/expenses/List";
 import ExpenseDrawer from "./components/expenses/ExpenseDrawer";
+import SkeletonCard from "./components/SkeletonCard";
+import SkeletonTable from "./components/SkeletonTable";
 import Modal from "./components/Modal";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -83,18 +85,20 @@ const App = () => {
               py={5}
               gap={5}
             >
-              {isLoading && <Spinner />}
               <AddExpenseForm
                 formID="add-expense-form-desktop"
                 kmStart={kmStart}
                 onSubmitExpense={addExpense}
               />
-              <ExpenseTable
-                columns={columns}
-                items={expenses}
-                onEdit={openEditForm}
-                onDelete={openDeleteModal}
-              />
+              {isLoading && <SkeletonTable rows={skeletonCount * 2} />}
+              {expenses && !isLoading && (
+                <ExpenseTable
+                  columns={columns}
+                  items={expenses}
+                  onEdit={openEditForm}
+                  onDelete={openDeleteModal}
+                />
+              )}
             </Flex>
           </Container>
 
@@ -104,12 +108,23 @@ const App = () => {
             mt={5}
             display={{ base: "block", lg: "none" }}
           >
-            {isLoading && <Spinner />}
-            <ExpenseList
-              items={expenses}
-              onEdit={openEditForm}
-              onDelete={openDeleteModal}
-            />
+            {isLoading && (
+              <VStack width="full" gap={4}>
+                <For
+                  each={Array(skeletonCount).fill(null)}
+                  fallback={<SkeletonCard />}
+                >
+                  {(_, index) => <SkeletonCard key={index} />}
+                </For>
+              </VStack>
+            )}
+            {expenses && !isLoading && (
+              <ExpenseList
+                items={expenses}
+                onEdit={openEditForm}
+                onDelete={openDeleteModal}
+              />
+            )}
           </Container>
         </Flex>
 
