@@ -44,7 +44,7 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
 
   async create(entity: Omit<TApp, "id">): Promise<TApp> {
     const { data, error } = await supabase
-      .from(this.table + "x")
+      .from(this.table)
       .insert(this.toDB(entity) as any)
       .select()
       .single();

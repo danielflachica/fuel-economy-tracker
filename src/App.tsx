@@ -33,10 +33,10 @@ const App = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openError, setOpenError] = useState(false);
 
-  const addExpense = async (data: NewExpense) => {
+  const addExpense = async (expense: NewExpense) => {
     setLoading(true);
     try {
-      const newExpense = await expenseService.create(data);
+      const newExpense = await expenseService.create(expense);
       setExpenses([newExpense, ...expenses]);
       setKmStart(newExpense.kmEnd || 0);
       setLoading(false);
@@ -53,6 +53,7 @@ const App = () => {
     setOpenEdit(true);
   };
 
+  // TO-DO: async update
   const editExpense = (data: Expense) => {
     const newExpenses = expenses.map((expense) =>
       expense.id == data.id ? data : expense,
