@@ -68,12 +68,22 @@ const App = () => {
     setOpenModal(true);
   };
 
-  const deleteExpense = (expense: Expense) => {
-    const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
-    setExpenses(filteredExpenses);
-    setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
-    setExpense(null);
-    setOpenModal(false);
+  const deleteExpense = async (expense: Expense) => {
+    setLoading(true);
+    try {
+      await expenseService.delete(expense.id);
+      const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
+      setExpenses(filteredExpenses);
+      setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
+      setExpense(null);
+      setOpenModal(false);
+      setLoading(false);
+    } catch (err) {
+      setError("Could not delete expense. Please try again later.");
+      setExpense(null);
+      setOpenModal(false);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

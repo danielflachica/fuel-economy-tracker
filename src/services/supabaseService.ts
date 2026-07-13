@@ -64,8 +64,12 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
   }
 
   async delete(id: number): Promise<void> {
-    const { error } = await supabase.from(this.table).delete().eq("id", id);
+    const { error, count } = await supabase
+      .from(this.table)
+      .delete({ count: "exact" })
+      .eq("id", id);
     if (error) throw error;
+    if (count === 0) throw new Error(`Record with id ${id} not found.`);
   }
 }
 
