@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Button, Container, Flex, For, SimpleGrid } from "@chakra-ui/react";
 import { IoMdAdd } from "react-icons/io";
 import { columns, skeletonCount } from "./utilities/utils";
-import type { Expense } from "@/types/Expense";
+import type { Expense, NewExpense } from "@/types/Expense";
+import expenseService from "./services/expenseService";
 import useExpenses from "./hooks/useExpenses";
 import AddExpenseForm from "./components/expenses/AddForm";
 import EditExpenseForm from "./components/expenses/EditForm";
@@ -16,18 +17,35 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 const App = () => {
-  const { expenses, setExpenses, kmStart, setKmStart, error, isLoading } =
-    useExpenses();
+  const {
+    expenses,
+    setExpenses,
+    kmStart,
+    setKmStart,
+    error,
+    setError,
+    isLoading,
+    setLoading,
+  } = useExpenses();
   const [expense, setExpense] = useState<Expense | null>(null);
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openError, setOpenError] = useState(false);
 
-  const addExpense = (data: Expense) => {
-    setExpenses([...expenses, data]);
-    setKmStart(data.kmEnd || 0);
-    setOpenAdd(false);
+  const addExpense = async (data: NewExpense) => {
+    setLoading(true);
+    try {
+      const newExpense = await expenseService.create(data);
+      setExpenses([newExpense, ...expenses]);
+      setKmStart(newExpense.kmEnd || 0);
+      setLoading(false);
+      setOpenAdd(false);
+    } catch (err) {
+      setError("Could not create expense. Please try again later.");
+      setLoading(false);
+      setOpenAdd(false);
+    }
   };
 
   const openEditForm = (expense: Expense) => {
@@ -88,6 +106,7 @@ const App = () => {
               <AddExpenseForm
                 formID="add-expense-form-desktop"
                 kmStart={kmStart}
+                isLoading={isLoading}
                 onSubmitExpense={addExpense}
               />
               {isLoading && <SkeletonTable rows={skeletonCount * 2} />}
@@ -132,6 +151,7 @@ const App = () => {
           <ExpenseDrawer
             formID="edit-expense-form"
             title="Edit Expense"
+            isLoading={isLoading}
             open={openEdit}
             setOpen={(e) => setOpenEdit(e.open)}
           >
@@ -147,12 +167,14 @@ const App = () => {
           formID="add-expense-form"
           action="Submit"
           title="Add Expense"
+          isLoading={isLoading}
           open={openAdd}
           setOpen={(e) => setOpenAdd(e.open)}
         >
           <AddExpenseForm
             formID="add-expense-form"
             kmStart={kmStart}
+            isLoading={isLoading}
             onSubmitExpense={addExpense}
           />
         </ExpenseDrawer>
@@ -203,7 +225,10 @@ const App = () => {
             action="close"
             colorPalette="red"
             showCancelButton={false}
-            onConfirm={() => setOpenError(false)}
+            onConfirm={() => {
+              setError(null);
+              setOpenError(false);
+            }}
           >
             {error}
           </Modal>

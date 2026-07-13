@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Expense } from "@/types/Expense";
-import { getExpenses } from "@/services/expenseService";
+import expenseService from "@/services/expenseService";
 
 const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -17,7 +17,7 @@ const useExpenses = () => {
     setError(null);
 
     try {
-      const expenses = await getExpenses();
+      const expenses = await expenseService.getAll();
       setExpenses(expenses);
       setKmStart(Math.max(...expenses.map((e) => e.kmEnd), 0));
       setLoading(false);
@@ -30,7 +30,16 @@ const useExpenses = () => {
     }
   };
 
-  return { expenses, setExpenses, kmStart, setKmStart, error, isLoading };
+  return {
+    expenses,
+    setExpenses,
+    kmStart,
+    setKmStart,
+    error,
+    setError,
+    isLoading,
+    setLoading,
+  };
 };
 
 export default useExpenses;

@@ -9,17 +9,23 @@ import {
 import { TbCurrencyPeso } from "react-icons/tb";
 import { FaCarAlt, FaGasPump } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import type { Expense, ExpenseFormValues } from "@/types/Expense";
+import type { NewExpense, ExpenseFormValues } from "@/types/Expense";
 import { useEffect } from "react";
 import { numberRules } from "@/utilities/utils";
 
 interface Props {
   formID: string;
   kmStart: number;
-  onSubmitExpense: (data: Expense) => void;
+  isLoading: boolean;
+  onSubmitExpense: (data: NewExpense) => void;
 }
 
-const AddExpenseForm = ({ formID, kmStart, onSubmitExpense }: Props) => {
+const AddExpenseForm = ({
+  formID,
+  kmStart,
+  isLoading = false,
+  onSubmitExpense,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -43,8 +49,7 @@ const AddExpenseForm = ({ formID, kmStart, onSubmitExpense }: Props) => {
   }, [kmStart]);
 
   const onSubmit = (data: ExpenseFormValues) => {
-    const expense: Expense = {
-      id: Math.floor(Math.random() * 1000) + 1, // random ID
+    const newExpense: NewExpense = {
       date: new Date(data.date),
       kmStart: Number(data.kmStart),
       kmEnd: Number(data.kmEnd),
@@ -52,7 +57,7 @@ const AddExpenseForm = ({ formID, kmStart, onSubmitExpense }: Props) => {
       gasPrice: Number(data.gasPrice),
     };
 
-    onSubmitExpense(expense);
+    onSubmitExpense(newExpense);
 
     reset({
       date: new Date().toISOString().split("T")[0],
@@ -116,6 +121,7 @@ const AddExpenseForm = ({ formID, kmStart, onSubmitExpense }: Props) => {
             borderLeftRadius={{ base: "md", lg: 0 }}
             flexShrink={0}
             display={{ base: "none", lg: "flex" }}
+            loading={isLoading}
           >
             Submit
           </Button>

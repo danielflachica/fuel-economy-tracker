@@ -1,5 +1,10 @@
-import { supabase } from "./supabase";
-import type { Expense, ExpenseDatabaseRow } from "@/types/Expense";
+import type {
+  Expense,
+  NewExpense,
+  ExpenseDatabaseRow,
+  NewExpenseDatabaseRow,
+} from "@/types/Expense";
+import createSupabaseService from "./supabaseService";
 
 // Helper functions to convert between the database representation of an expense and the application's representation.
 const fromDB = (row: ExpenseDatabaseRow): Expense => {
@@ -13,23 +18,14 @@ const fromDB = (row: ExpenseDatabaseRow): Expense => {
   };
 };
 
-// const toDB = (expense: Expense): ExpenseDatabaseRow => {
-//   return {
-//     id: expense.id,
-//     expense_date: expense.date.toISOString(),
-//     km_start: expense.kmStart,
-//     km_end: expense.kmEnd,
-//     liters_consumed: expense.liters,
-//     gas_price: expense.gasPrice,
-//   };
-// };
-
-export const getExpenses = async (): Promise<Expense[]> => {
-  const { data, error } = await supabase
-    .from("expenses")
-    .select("*")
-    .order("expense_date", { ascending: false });
-
-  if (error) throw error;
-  return data.map((row) => fromDB(row));
+const toDB = (expense: NewExpense): NewExpenseDatabaseRow => {
+  return {
+    expense_date: expense.date.toISOString(),
+    km_start: expense.kmStart,
+    km_end: expense.kmEnd,
+    liters_consumed: expense.liters,
+    gas_price: expense.gasPrice,
+  };
 };
+
+export default createSupabaseService("expenses", fromDB, toDB);

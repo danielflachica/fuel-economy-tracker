@@ -7,6 +7,8 @@ export interface Expense {
   gasPrice: number;
 }
 
+export type NewExpense = Omit<Expense, "id">;
+
 export interface ExpenseFormValues {
   id: number;
   date: string;
@@ -24,3 +26,5 @@ export interface ExpenseDatabaseRow {
   liters_consumed: number;
   gas_price: number;
 }
+
+export type NewExpenseDatabaseRow = Omit<ExpenseDatabaseRow, "id">;

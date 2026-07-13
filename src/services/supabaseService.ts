@@ -11,12 +11,12 @@ interface Entity {
 class SupabaseService<TDB extends Entity, TApp extends Entity> {
   private table: string;
   private fromDB: (row: TDB) => TApp;
-  private toDB: (entity: TApp) => TDB;
+  private toDB: (entity: Omit<TApp, "id">) => Omit<TDB, "id">;
 
   constructor(
     table: string,
     fromDB: (row: TDB) => TApp,
-    toDB: (entity: TApp) => TDB,
+    toDB: (entity: Omit<TApp, "id">) => Omit<TDB, "id">,
   ) {
     this.table = table;
     this.fromDB = fromDB;
@@ -32,20 +32,20 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
     return data.map((row) => this.fromDB(row as TDB));
   }
 
-  async get(entity: TApp): Promise<TApp> {
+  async get(id: number): Promise<TApp> {
     const { data, error } = await supabase
       .from(this.table)
       .select("*")
-      .eq("id", entity.id)
+      .eq("id", id)
       .single();
     if (error) throw error;
     return this.fromDB(data as TDB);
   }
 
-  async create(entity: TApp): Promise<TApp> {
+  async create(entity: Omit<TApp, "id">): Promise<TApp> {
     const { data, error } = await supabase
-      .from(this.table)
-      .insert(this.toDB(entity))
+      .from(this.table + "x")
+      .insert(this.toDB(entity) as any)
       .select()
       .single();
     if (error) throw error;
@@ -55,7 +55,7 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
   async update(entity: TApp): Promise<TApp> {
     const { data, error } = await supabase
       .from(this.table)
-      .update(this.toDB(entity))
+      .update(this.toDB(entity) as any)
       .eq("id", entity.id)
       .select()
       .single();
@@ -72,7 +72,7 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
 const createSupabaseService = <TDB extends Entity, TApp extends Entity>(
   table: string,
   fromDB: (row: TDB) => TApp,
-  toDB: (entity: TApp) => TDB,
+  toDB: (entity: Omit<TApp, "id">) => Omit<TDB, "id">,
 ) => new SupabaseService(table, fromDB, toDB);
 
 export default createSupabaseService;

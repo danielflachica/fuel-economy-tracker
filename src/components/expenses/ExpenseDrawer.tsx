@@ -6,6 +6,7 @@ interface Props {
   formID: string;
   action?: string;
   title: string;
+  isLoading: boolean;
   open: boolean;
   setOpen: (open: any) => void;
 }
@@ -15,6 +16,7 @@ const ExpenseDrawer = ({
   formID,
   action = "Save",
   title,
+  isLoading = false,
   open,
   setOpen,
 }: Props) => {
@@ -44,6 +46,7 @@ const ExpenseDrawer = ({
                 form={formID}
                 colorPalette="brand"
                 variant="solid"
+                loading={isLoading}
               >
                 {action}
               </Button>
