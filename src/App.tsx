@@ -53,14 +53,24 @@ const App = () => {
     setOpenEdit(true);
   };
 
-  // TO-DO: async update
-  const editExpense = (data: Expense) => {
-    const newExpenses = expenses.map((expense) =>
-      expense.id == data.id ? data : expense,
-    );
-    setExpenses(newExpenses);
-    setExpense(null);
-    setOpenEdit(false);
+  const editExpense = async (data: Expense) => {
+    setLoading(true);
+    try {
+      const updatedExpense = await expenseService.update(data);
+      const newExpenses = expenses.map((expense) =>
+        expense.id === updatedExpense.id ? updatedExpense : expense,
+      );
+      setExpenses(newExpenses);
+      setExpense(null);
+      setLoading(false);
+      setOpenEdit(false);
+    } catch (err) {
+      setError("Could not update expense. Please try again later.");
+      setExpenses(expenses);
+      setExpense(null);
+      setLoading(false);
+      setOpenEdit(false);
+    }
   };
 
   const openDeleteModal = (expense: Expense) => {
