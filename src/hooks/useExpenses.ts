@@ -20,11 +20,9 @@ const useExpenses = () => {
       const expenses = await expenseService.getAll();
       setExpenses(expenses);
       setKmStart(Math.max(...expenses.map((e) => e.kmEnd), 0));
-      setLoading(false);
     } catch (err) {
       console.error(err);
       setError("Could not fetch expenses. Please try again later.");
-      setLoading(false);
     } finally {
       setLoading(false);
     }

@@ -39,12 +39,11 @@ const App = () => {
       const newExpense = await expenseService.create(expense);
       setExpenses([newExpense, ...expenses]);
       setKmStart(newExpense.kmEnd || 0);
-      setLoading(false);
-      setOpenAdd(false);
     } catch (err) {
       setError("Could not create expense. Please try again later.");
-      setLoading(false);
+    } finally {
       setOpenAdd(false);
+      setLoading(false);
     }
   };
 
@@ -61,15 +60,13 @@ const App = () => {
         expense.id === updatedExpense.id ? updatedExpense : expense,
       );
       setExpenses(newExpenses);
-      setExpense(null);
-      setLoading(false);
-      setOpenEdit(false);
     } catch (err) {
       setError("Could not update expense. Please try again later.");
       setExpenses(expenses);
+    } finally {
+      setOpenEdit(false);
       setExpense(null);
       setLoading(false);
-      setOpenEdit(false);
     }
   };
 
@@ -85,13 +82,11 @@ const App = () => {
       const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
       setExpenses(filteredExpenses);
       setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
-      setExpense(null);
-      setOpenModal(false);
-      setLoading(false);
     } catch (err) {
       setError("Could not delete expense. Please try again later.");
-      setExpense(null);
+    } finally {
       setOpenModal(false);
+      setExpense(null);
       setLoading(false);
     }
   };
