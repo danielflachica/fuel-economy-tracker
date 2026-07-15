@@ -8,7 +8,7 @@ const Footer = () => {
       <Text fontSize="xs" color="fg.subtle" textAlign="center">
         &copy; {year + " "}
         <a
-          href="https://github.com/danielflachica/wordle-clone"
+          href="https://github.com/danielflachica/fuel-economy-tracker"
           target="_blank"
         >
           danielflachica
