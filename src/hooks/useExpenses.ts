@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import type { Error } from "@/types/Error";
 import type { Expense, NewExpense } from "@/types/Expense";
 import expenseService from "@/services/expenseService";
 
 const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Error | null>(null);
   const [isLoading, setLoading] = useState(false);
 
   // Recompute kmStart whenever expenses change
@@ -17,6 +18,11 @@ const useExpenses = () => {
     fetchExpenses();
   }, []);
 
+  // Log to console any time an error is thrown
+  useEffect(() => {
+    if (error) console.error("APP ERROR LOG:", error);
+  }, [error]);
+
   const fetchExpenses = async () => {
     setLoading(true);
     setError(null);
@@ -25,8 +31,10 @@ const useExpenses = () => {
       const expenses = await expenseService.getAll("expense_date");
       setExpenses(expenses);
     } catch (err) {
-      console.error(err);
-      setError("Could not fetch expenses. Please try again later.");
+      setError({
+        message: "Could not fetch expenses. Please try again later.",
+        detail: err as string,
+      });
     } finally {
       setLoading(false);
     }
@@ -40,7 +48,10 @@ const useExpenses = () => {
       const newExpense = await expenseService.create(expense);
       setExpenses([newExpense, ...expenses]);
     } catch (err) {
-      setError("Could not create expense. Please try again later.");
+      setError({
+        message: "Could not create expense. Please try again later.",
+        detail: err as string,
+      });
     } finally {
       setLoading(false);
     }
@@ -57,7 +68,10 @@ const useExpenses = () => {
       );
       setExpenses(newExpenses);
     } catch (err) {
-      setError("Could not update expense. Please try again later.");
+      setError({
+        message: "Could not update expense. Please try again later.",
+        detail: err as string,
+      });
       setExpenses(expenses);
     } finally {
       setLoading(false);
@@ -73,7 +87,10 @@ const useExpenses = () => {
       const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
       setExpenses(filteredExpenses);
     } catch (err) {
-      setError("Could not delete expense. Please try again later.");
+      setError({
+        message: "Could not delete expense. Please try again later.",
+        detail: err as string,
+      });
     } finally {
       setLoading(false);
     }

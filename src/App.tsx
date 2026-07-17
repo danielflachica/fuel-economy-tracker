@@ -20,6 +20,7 @@ const App = () => {
     expenses,
     kmStart,
     error,
+    setError,
     isLoading,
     addExpense,
     editExpense,
@@ -203,10 +204,11 @@ const App = () => {
             colorPalette="red"
             showCancelButton={false}
             onConfirm={() => {
+              setError(null);
               setOpenError(false);
             }}
           >
-            {error}
+            {error.message}
           </Modal>
         )}
 
