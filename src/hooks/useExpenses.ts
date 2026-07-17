@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Error } from "@/types/Error";
+import type { AppError } from "@/types/AppError";
 import type { Expense, NewExpense } from "@/types/Expense";
 import expenseService from "@/services/expenseService";
 
 const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<AppError | null>(null);
   const [isLoading, setLoading] = useState(false);
 
   // Recompute kmStart whenever expenses change
@@ -33,7 +33,7 @@ const useExpenses = () => {
     } catch (err) {
       setError({
         message: "Could not fetch expenses. Please try again later.",
-        detail: err as string,
+        detail: err instanceof Error ? err.message : String(err),
       });
     } finally {
       setLoading(false);
@@ -50,7 +50,7 @@ const useExpenses = () => {
     } catch (err) {
       setError({
         message: "Could not create expense. Please try again later.",
-        detail: err as string,
+        detail: err instanceof Error ? err.message : String(err),
       });
     } finally {
       setLoading(false);
@@ -70,7 +70,7 @@ const useExpenses = () => {
     } catch (err) {
       setError({
         message: "Could not update expense. Please try again later.",
-        detail: err as string,
+        detail: err instanceof Error ? err.message : String(err),
       });
       setExpenses(expenses);
     } finally {
@@ -89,7 +89,7 @@ const useExpenses = () => {
     } catch (err) {
       setError({
         message: "Could not delete expense. Please try again later.",
-        detail: err as string,
+        detail: err instanceof Error ? err.message : String(err),
       });
     } finally {
       setLoading(false);
