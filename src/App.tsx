@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Container, Flex, For, SimpleGrid } from "@chakra-ui/react";
 import { IoMdAdd } from "react-icons/io";
 import { columns, skeletonCount } from "./utilities/utils";
-import type { Expense, NewExpense } from "@/types/Expense";
-import expenseService from "./services/expenseService";
+import type { Expense } from "@/types/Expense";
 import useExpenses from "./hooks/useExpenses";
 import AddExpenseForm from "./components/expenses/AddForm";
 import EditExpenseForm from "./components/expenses/EditForm";
@@ -19,13 +18,12 @@ import Footer from "./components/Footer";
 const App = () => {
   const {
     expenses,
-    setExpenses,
     kmStart,
-    setKmStart,
     error,
-    setError,
     isLoading,
-    setLoading,
+    addExpense,
+    editExpense,
+    deleteExpense,
   } = useExpenses();
   const [expense, setExpense] = useState<Expense | null>(null);
   const [openAdd, setOpenAdd] = useState(false);
@@ -33,62 +31,14 @@ const App = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openError, setOpenError] = useState(false);
 
-  const addExpense = async (expense: NewExpense) => {
-    setLoading(true);
-    try {
-      const newExpense = await expenseService.create(expense);
-      setExpenses([newExpense, ...expenses]);
-      setKmStart(newExpense.kmEnd || 0);
-    } catch (err) {
-      setError("Could not create expense. Please try again later.");
-    } finally {
-      setOpenAdd(false);
-      setLoading(false);
-    }
-  };
-
   const openEditForm = (expense: Expense) => {
     setExpense(expense);
     setOpenEdit(true);
   };
 
-  const editExpense = async (data: Expense) => {
-    setLoading(true);
-    try {
-      const updatedExpense = await expenseService.update(data);
-      const newExpenses = expenses.map((expense) =>
-        expense.id === updatedExpense.id ? updatedExpense : expense,
-      );
-      setExpenses(newExpenses);
-    } catch (err) {
-      setError("Could not update expense. Please try again later.");
-      setExpenses(expenses);
-    } finally {
-      setOpenEdit(false);
-      setExpense(null);
-      setLoading(false);
-    }
-  };
-
   const openDeleteModal = (expense: Expense) => {
     setExpense(expense);
     setOpenModal(true);
-  };
-
-  const deleteExpense = async (expense: Expense) => {
-    setLoading(true);
-    try {
-      await expenseService.delete(expense.id);
-      const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
-      setExpenses(filteredExpenses);
-      setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
-    } catch (err) {
-      setError("Could not delete expense. Please try again later.");
-    } finally {
-      setOpenModal(false);
-      setExpense(null);
-      setLoading(false);
-    }
   };
 
   useEffect(() => {
@@ -174,7 +124,11 @@ const App = () => {
             <EditExpenseForm
               formID="edit-expense-form"
               expense={expense}
-              onEditExpense={editExpense}
+              onEditExpense={(expense) => {
+                editExpense(expense);
+                setExpense(null);
+                setOpenEdit(false);
+              }}
             />
           </ExpenseDrawer>
         )}
@@ -191,7 +145,10 @@ const App = () => {
             formID="add-expense-form"
             kmStart={kmStart}
             isLoading={isLoading}
-            onSubmitExpense={addExpense}
+            onSubmitExpense={(expense) => {
+              addExpense(expense);
+              setOpenAdd(false);
+            }}
           />
         </ExpenseDrawer>
 
@@ -223,7 +180,11 @@ const App = () => {
             size="sm"
             action="delete"
             colorPalette="red"
-            onConfirm={deleteExpense}
+            onConfirm={(expense) => {
+              deleteExpense(expense);
+              setExpense(null);
+              setOpenModal(false);
+            }}
           >
             You are about to delete this expense from{" "}
             <code>{expense.date.toLocaleDateString()}</code>. This action cannot
@@ -242,7 +203,6 @@ const App = () => {
             colorPalette="red"
             showCancelButton={false}
             onConfirm={() => {
-              setError(null);
               setOpenError(false);
             }}
           >

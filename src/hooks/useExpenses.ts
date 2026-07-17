@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Expense } from "@/types/Expense";
+import type { Expense, NewExpense } from "@/types/Expense";
 import expenseService from "@/services/expenseService";
 
 const useExpenses = () => {
@@ -28,15 +28,64 @@ const useExpenses = () => {
     }
   };
 
+  const addExpense = async (expense: NewExpense) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const newExpense = await expenseService.create(expense);
+      setExpenses([newExpense, ...expenses]);
+      setKmStart(newExpense.kmEnd || 0);
+    } catch (err) {
+      setError("Could not create expense. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editExpense = async (expense: Expense) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const updatedExpense = await expenseService.update(expense);
+      const newExpenses = expenses.map((e) =>
+        e.id === updatedExpense.id ? updatedExpense : e,
+      );
+      setExpenses(newExpenses);
+    } catch (err) {
+      setError("Could not update expense. Please try again later.");
+      setExpenses(expenses);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteExpense = async (expense: Expense) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      await expenseService.delete(expense.id);
+      const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
+      setExpenses(filteredExpenses);
+      setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
+    } catch (err) {
+      setError("Could not delete expense. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     expenses,
-    setExpenses,
     kmStart,
-    setKmStart,
     error,
     setError,
     isLoading,
-    setLoading,
+    addExpense,
+    editExpense,
+    deleteExpense,
   };
 };
 
