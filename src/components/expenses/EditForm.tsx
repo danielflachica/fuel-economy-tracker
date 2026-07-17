@@ -1,7 +1,7 @@
 import { Field, Input, InputGroup, VStack } from "@chakra-ui/react";
 import type { Expense, ExpenseFormValues } from "@/types/Expense";
 import { numberRules } from "@/utilities/utils";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { FaCalendar, FaCarAlt, FaGasPump } from "react-icons/fa";
 import { TbCurrencyPeso } from "react-icons/tb";
@@ -13,14 +13,16 @@ interface Props {
 }
 
 const EditExpenseForm = ({ formID, expense, onEditExpense }: Props) => {
-  const defaultExpense = {
-    id: expense.id,
-    date: expense.date ? expense.date.toISOString().split("T")[0] : "",
-    kmStart: String(expense.kmStart),
-    kmEnd: String(expense.kmEnd),
-    liters: String(expense.liters),
-    gasPrice: String(expense.gasPrice),
-  };
+  const defaultExpense = useMemo(() => {
+    return {
+      id: expense.id,
+      date: expense.date ? expense.date.toISOString().split("T")[0] : "",
+      kmStart: String(expense.kmStart),
+      kmEnd: String(expense.kmEnd),
+      liters: String(expense.liters),
+      gasPrice: String(expense.gasPrice),
+    };
+  }, [expense]);
 
   const {
     register,

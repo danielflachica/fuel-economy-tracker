@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Expense, NewExpense } from "@/types/Expense";
 import expenseService from "@/services/expenseService";
 
 const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [kmStart, setKmStart] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(false);
 
+  // Recompute kmStart whenever expenses change
+  const kmStart = useMemo(() => {
+    return Math.max(...expenses.map((e) => e.kmEnd), 0);
+  }, [expenses]);
+
+  // Fetch expenses on first render
   useEffect(() => {
     fetchExpenses();
   }, []);
@@ -19,7 +24,6 @@ const useExpenses = () => {
     try {
       const expenses = await expenseService.getAll("expense_date");
       setExpenses(expenses);
-      setKmStart(Math.max(...expenses.map((e) => e.kmEnd), 0));
     } catch (err) {
       console.error(err);
       setError("Could not fetch expenses. Please try again later.");
@@ -35,7 +39,6 @@ const useExpenses = () => {
     try {
       const newExpense = await expenseService.create(expense);
       setExpenses([newExpense, ...expenses]);
-      setKmStart(newExpense.kmEnd || 0);
     } catch (err) {
       setError("Could not create expense. Please try again later.");
     } finally {
@@ -69,7 +72,6 @@ const useExpenses = () => {
       await expenseService.delete(expense.id);
       const filteredExpenses = [...expenses].filter((e) => e.id !== expense.id);
       setExpenses(filteredExpenses);
-      setKmStart(Math.max(...filteredExpenses.map((e) => e.kmEnd), 0));
     } catch (err) {
       setError("Could not delete expense. Please try again later.");
     } finally {
