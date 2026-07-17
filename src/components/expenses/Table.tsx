@@ -1,6 +1,13 @@
 import type { Column } from "@/types/Column";
 import type { Expense } from "@/types/Expense";
-import { dec, num, ph } from "@/utilities/utils";
+import {
+  dec,
+  num,
+  ph,
+  calcDistance,
+  calcFuelEfficiency,
+  calcFuelCost,
+} from "@/utilities/utils";
 import { Button, HStack, Table } from "@chakra-ui/react";
 import NoRecordsFound from "../NoRecordsFound";
 
@@ -32,14 +39,12 @@ const ExpenseTable = ({ columns, items, onEdit, onDelete }: Props) => {
             <Table.Cell>{item.date.toDateString()}</Table.Cell>
             <Table.Cell>{num.format(item.kmStart)}</Table.Cell>
             <Table.Cell>{num.format(item.kmEnd)}</Table.Cell>
-            <Table.Cell>{num.format(item.kmEnd - item.kmStart)}</Table.Cell>
+            <Table.Cell>{num.format(calcDistance(item))}</Table.Cell>
             <Table.Cell>{dec.format(item.liters)}</Table.Cell>
-            <Table.Cell>
-              {dec.format((item.kmEnd - item.kmStart) / item.liters)}
-            </Table.Cell>
+            <Table.Cell>{dec.format(calcFuelEfficiency(item))}</Table.Cell>
             <Table.Cell textAlign="end">{ph.format(item.gasPrice)}</Table.Cell>
             <Table.Cell textAlign="end">
-              {ph.format(item.gasPrice * item.liters)}
+              {ph.format(calcFuelCost(item))}
             </Table.Cell>
             <Table.Cell>
               <HStack justify="flex-end">

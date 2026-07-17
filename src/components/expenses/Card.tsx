@@ -1,5 +1,12 @@
 import type { Expense } from "@/types/Expense";
-import { dec, num, ph } from "@/utilities/utils";
+import {
+  dec,
+  num,
+  ph,
+  calcDistance,
+  calcFuelEfficiency,
+  calcFuelCost,
+} from "@/utilities/utils";
 import {
   Button,
   ButtonGroup,
@@ -18,10 +25,6 @@ interface Props {
 }
 
 const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
-  const distance = expense.kmEnd - expense.kmStart;
-  const fuelEfficiency = distance / expense.liters;
-  const totalFuelCost = expense.liters * expense.gasPrice;
-
   return (
     <Card.Root bg="bg.surface">
       <Card.Header>
@@ -63,7 +66,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <VStack alignItems="flex-start" gap={0} width="auto" bg="">
+          <VStack alignItems="flex-start" gap={0} width="auto">
             <Text fontSize="2xs" fontWeight="bold" color="fg.muted">
               FUEL EFFICIENCY
             </Text>
@@ -74,7 +77,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
                 color="brand.500"
                 mb="-8px"
               >
-                {dec.format(fuelEfficiency)}
+                {dec.format(calcFuelEfficiency(expense))}
               </Text>
               <Text fontSize="sm" fontWeight="bold" color="fg.subtle" mb="-1px">
                 km/L
@@ -88,7 +91,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
                 Distance
               </Text>
               <Text fontSize="xs" fontWeight="bold">
-                {num.format(distance)} km
+                {num.format(calcDistance(expense))} km
               </Text>
             </HStack>
             <HStack justifyContent="space-between" alignItems="center" w="100%">
@@ -117,7 +120,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: Props) => {
               TOTAL FUEL COST
             </Text>
             <Text fontSize="md" fontWeight="bold">
-              {ph.format(totalFuelCost)}
+              {ph.format(calcFuelCost(expense))}
             </Text>
           </VStack>
         </HStack>
