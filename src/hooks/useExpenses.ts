@@ -17,7 +17,7 @@ const useExpenses = () => {
     setError(null);
 
     try {
-      const expenses = await expenseService.getAll();
+      const expenses = await expenseService.getAll("expense_date");
       setExpenses(expenses);
       setKmStart(Math.max(...expenses.map((e) => e.kmEnd), 0));
     } catch (err) {
