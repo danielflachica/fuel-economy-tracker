@@ -1,6 +1,6 @@
 {
   "name": "Fuel Economy Tracker",
-  "short_name": "Fuel",
+  "short_name": "Fuel Tracker",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
