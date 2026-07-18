@@ -8,7 +8,7 @@ interface Props {
 
 const NoRecordsFound = ({
   title = "Ready to hit the road?",
-  message = "No records found. Add an expense to get started.",
+  message = "Add an expense to get started.",
 }: Props) => {
   return (
     <EmptyState.Root mt="-2em">
