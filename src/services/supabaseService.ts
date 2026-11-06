@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { getClientSlug } from "./clientSlug";
 
 interface Entity {
   id: number;
@@ -23,10 +24,16 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
     this.toDB = toDB;
   }
 
+  // Get client slug per call (not in constructor) from URL or local storage
+  private get clientSlug(): string {
+    return getClientSlug();
+  }
+
   async getAll(orderBy?: string): Promise<TApp[]> {
     const { data, error } = await supabase
       .from(this.table)
       .select("*")
+      .eq("client_slug", this.clientSlug)
       .order(orderBy ?? "id", { ascending: false });
     if (error) throw error;
     return data.map((row) => this.fromDB(row as TDB));
@@ -37,6 +44,7 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
       .from(this.table)
       .select("*")
       .eq("id", id)
+      .eq("client_slug", this.clientSlug)
       .single();
     if (error) throw error;
     return this.fromDB(data as TDB);
@@ -45,7 +53,7 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
   async create(entity: Omit<TApp, "id">): Promise<TApp> {
     const { data, error } = await supabase
       .from(this.table)
-      .insert(this.toDB(entity) as any)
+      .insert({ ...this.toDB(entity), client_slug: this.clientSlug } as any)
       .select()
       .single();
     if (error) throw error;
@@ -57,6 +65,7 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
       .from(this.table)
       .update(this.toDB(entity) as any)
       .eq("id", entity.id)
+      .eq("client_slug", this.clientSlug)
       .select()
       .single();
     if (error) throw error;
@@ -67,7 +76,8 @@ class SupabaseService<TDB extends Entity, TApp extends Entity> {
     const { error, count } = await supabase
       .from(this.table)
       .delete({ count: "exact" })
-      .eq("id", id);
+      .eq("id", id)
+      .eq("client_slug", this.clientSlug);
     if (error) throw error;
     if (count === 0) throw new Error(`Record with id ${id} not found.`);
   }
